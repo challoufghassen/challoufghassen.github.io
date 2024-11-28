@@ -26,5 +26,9 @@
   // Run tasks in macOS
   "terminal.integrated.profiles.osx": {
     "zsh": { "path": "/bin/zsh", "args": ["-l", "-i"] }
-  }
+  },
+  "DockerRun.DisableDockerrc": true,
+  "DockerRun.Containers": [
+    "b7c76f2bc91c"
+  ]
 }
