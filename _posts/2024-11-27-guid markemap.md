@@ -2,7 +2,7 @@
 title: guid markemap
 categories: guid]
 tags: [Markmap,Markdown,]
-image: images/markmap/markmap.webp
+image: images/markmap/mg.png
 ---
 <style>
         iframe {
