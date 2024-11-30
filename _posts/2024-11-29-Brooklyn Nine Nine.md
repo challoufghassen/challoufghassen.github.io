@@ -1,7 +1,7 @@
 ---
 title: Brooklyn Nine Nine
 categories: [TryHackMe]
-tags: [Linux, medium,]
+tags: [Linux, easy,]
 image: images/Brooklyn Nine Nine/Brooklyn Nine Nine.jpg
 ---
 
