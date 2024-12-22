@@ -5,7 +5,7 @@ tags: [Linux, easy,]
 image: images/Brooklyn Nine Nine/Brooklyn Nine Nine.jpg
 ---
 
-**Brooklyn Nine-Nine** is a **medium** rated room on **TryHackMe**, inspired by the *Brooklyn Nine-Nine* TV series. The challenge starts with a web server hosting a precinct's internal site containing employee profiles and clues. By enumerating the server, hidden files and directories are uncovered, leading to sensitive information. Initial access is gained through weak credentials, and exploiting further vulnerabilities allows privilege escalation.
+**Brooklyn Nine-Nine** is a **easy** rated room on **TryHackMe**, inspired by the *Brooklyn Nine-Nine* TV series. The challenge starts with a web server hosting a precinct's internal site containing employee profiles and clues. By enumerating the server, hidden files and directories are uncovered, leading to sensitive information. Initial access is gained through weak credentials, and exploiting further vulnerabilities allows privilege escalation.
 
 
 

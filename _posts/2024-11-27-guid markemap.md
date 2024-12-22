@@ -1,6 +1,6 @@
 ---
 title: guid markemap
-categories: guid]
+categories: guid
 tags: [Markmap,Markdown,]
 image: images/markmap/mg.png
 ---
