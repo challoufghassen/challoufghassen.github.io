@@ -234,7 +234,6 @@ rule Zeus {
 
  // Suspected name of functions and DLL functionalities.
 
-  
 
 $function_name_KERNEL32="AsksmaceaglyBubuPulsKaifTeasMistPeelGhisPrimChaoLyr
 
@@ -271,13 +270,14 @@ ascii
  or $function_name_KERNEL32_FINDFIRSTFILEA
 
  and $hex_string_SHLWAPI_PATHREMOVEFILESPECA
- ```
+```
+
 
 Run the ``` yara64 zeus_rule.yara invoice_2318362983713_823931342io.pdf.exe -s -w -p 32 ```to detect this malware variant based on unique strings.
 
-	 ```-s ```: Print matched strings to stdout.
-	 ``` -w``` : Ignore warnings. 
-	 ```p 32``` : Allocate 32 threads.
+```s```: Print matched strings to stdout.            
+```w```: Ignore warnings.                  
+```p 32```: Allocate 32 threads.
 
 # Résumé of Key Findings
 The file `zeus.pdf.exe` is a sophisticated **Trojan** (`ZAccess/Sirefef`), detected by 53/76 antivirus engines, acting as a backdoor and dropper with aliases `zaccess`, `sirefef`, and `wldcr`. Compiled on November 25, 2013, it targets Windows systems, leveraging 150 imported functions across `SHLWAPI.dll`, `KERNEL32.dll`, and `USER32.dll`. It exhibits extensive file manipulation (34 functions), keylogging (5 functions), and information gathering (32 functions), with minimal networking (`Ping`). Three high-severity IDS alerts (IP `85.114.12…`, port 53) confirm network Trojan activity. YARA rules flag keylogging and file operations, while high-entropy sections (e.g., `.text`: 6.71) suggest obfuscation. Likely coded in **C# (60%)** or **C (40%)**, this malware poses a severe threat through persistence, credential theft, and system compromise.
