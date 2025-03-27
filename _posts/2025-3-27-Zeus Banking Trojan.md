@@ -63,7 +63,7 @@ image: images/malawar/zeuss.jpg
   - **Credential Access and Keylogging** (5 functions):
     - `GetAsyncKeyState`, `VkKeyScanA`, and `GetKeynameTextA` suggest keylogging to capture user input.
   - **Networking/Web** (2 functions):
-    - Limited to `Ping`, indicating basic network activity.
+    - Limited to `Ping`, indicatng basic network activity.
   - **Memory Management** (17 functions):
     - `LocalAlloc`, `VirtualQueryEx`, and `HeapFree` show memory manipulation.
   - **Evasion/Bypassing** (6 functions):
