@@ -6,6 +6,9 @@
     <title>Super Défi CTF de Détective Conan 🕵️‍♂️</title>
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
     <style>
+
+
+        
         :root {
             --bg-color: #0a0e17;
             --text-color: #e0e0e0;
@@ -29,6 +32,24 @@
             line-height: 1.6;
             position: relative;
             overflow-x: hidden;
+        }
+
+        .corner-image {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 100px;
+            height: auto;
+            opacity: 0.8;
+            z-index: 100;
+            transition: all 0.3s;
+            filter: drop-shadow(0 0 5px rgba(0, 183, 255, 0.5));
+        }
+        
+        .corner-image:hover {
+            opacity: 1;
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 10px rgba(0, 183, 255, 0.8));
         }
         
         .animated-bg {
@@ -664,6 +685,7 @@
     <div class="container">
         <header>
             <h1>Super Défi CTF de Détective Conan 🕵️‍♂️</h1>
+            <img src="club.png" alt="Detective Club" class="corner-image" title="Detective Boys Club">
             <p>Attrape les Drapeaux : Mission Cyber-Fun ! 🎉</p>
         </header>
 
@@ -756,7 +778,7 @@
             </form>
             
             <div id="passwordHint" class="hint" style="display:none;">
-                Mélange 4 mots rigolos avec des chiffres et symboles, comme "Bleu$Dragon42!PizzaLune" 🌙
+            
             </div>
             
             <div id="passwordResult" class="result"></div>
@@ -807,7 +829,7 @@
             </form>
             
             <div id="hint2" class="hint">
-                Regarde bien en bas à droite de l’image. Zoome ou augmente la luminosité ! 🌟
+               
             </div>
             
             <div id="stegResult" class="result"></div>
@@ -857,7 +879,7 @@
             </form>
             
             <div id="hint3" class="hint">
-                Essaie un décalage de 7 pour le code César. Le drapeau est le nom du restaurant dans le message ! 🍽️
+               
             </div>
             
             <div id="cipherResult" class="result"></div>
@@ -886,27 +908,27 @@
             
             <div class="clue">
                 <h3>Indice Magique ✨ 1</h3>
-                <p>`ls` montre tous les fichiers, comme ouvrir une boîte à jouets ! 🎁</p>
+                <p>`xx` montre tous les fichiers, comme ouvrir une boîte à jouets ! 🎁</p>
             </div>
             
             <div class="clue">
                 <h3>Indice Magique ✨ 2</h3>
-                <p>`cd` te fait voyager dans un autre dossier, comme changer de pièce ! 🚪</p>
+                <p>`xx` te fait voyager dans un autre dossier, comme changer de pièce ! 🚪</p>
             </div>
             
             <div class="clue">
                 <h3>Indice Magique ✨ 3</h3>
-                <p>`pwd` te dit exactement où tu es, comme une carte au trésor ! 🗺️</p>
+                <p>`xxx` te dit exactement où tu es, comme une carte au trésor ! 🗺️</p>
             </div>
             
             <div class="clue">
                 <h3>Indice Magique ✨ 4</h3>
-                <p>`mkdir` crée un nouveau dossier, comme construire une cabane ! 🏠</p>
+                <p>`xxxxx` crée un nouveau dossier, comme construire une cabane ! 🏠</p>
             </div>
             
             <div class="clue">
                 <h3>Indice Magique ✨ 5</h3>
-                <p>`cat` affiche ce qu’il y a dans un fichier, comme lire une lettre secrète ! 📜</p>
+                <p>`xxx` affiche ce qu’il y a dans un fichier, comme lire une lettre secrète ! 📜</p>
             </div>
             
             <h3>Ta Mission</h3>
@@ -922,7 +944,7 @@
             </form>
             
             <div id="hint4" class="hint">
-                Combine les commandes des indices dans l’ordre avec des /, comme conan{ls/cd/pwd/mkdir/cat} ! 🖱️
+                
             </div>
             
             <div id="sourceResult" class="result"></div>
@@ -950,16 +972,6 @@
                 <p>Épisodes 132-134 : "L’Affaire des Amoureux de Magie" 🎩</p>
             </div>
             
-            <div class="clue">
-                <h3>Indice Magique ✨ 2</h3>
-                <p>Épisodes 701-704 : "Le Train Mystérieux Noir" 🚂</p>
-            </div>
-            
-            <div class="clue">
-                <h3>Indice Magique ✨ 3</h3>
-                <p>Film 10 : "Le Requiem des Détectives Privés" 🎬</p>
-            </div>
-            
             <h3>Ta Mission</h3>
             <p>Attrape-moi si tu peux ! 😜</p>
             
@@ -973,7 +985,7 @@
             </form>
             
             <div id="hint5" class="hint">
-                Regarde bien la lettre "E" et vois si elle correspond à tous les indices. 🧐
+               
             </div>
             
             <div id="riddleResult" class="result"></div>
