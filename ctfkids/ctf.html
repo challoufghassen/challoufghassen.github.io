@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Défi CTF de Détective Conan 🕵️‍♂️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+
+
+        
+        :root {
+            --bg-color: #0a0e17;
+            --text-color: #e0e0e0;
+            --accent-color: #00b7ff;
+            --secondary-color: #141c2b;
+            --success-color: #00ff9d;
+            --error-color: #ff3860;
+            --card-bg: #141c2b;
+            --terminal-bg: #0c1016;
+            --terminal-text: #00ff9d;
+            --conan-blue: #0055a4;
+            --conan-red: #e30613;
+        }
+        
+        body {
+            font-family: 'Comic Neue', 'Courier New', monospace;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .corner-image {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 100px;
+            height: auto;
+            opacity: 0.8;
+            z-index: 100;
+            transition: all 0.3s;
+            filter: drop-shadow(0 0 5px rgba(0, 183, 255, 0.5));
+        }
+        
+        .corner-image:hover {
+            opacity: 1;
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 10px rgba(0, 183, 255, 0.8));
+        }
+        
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+        
+        .animated-bg::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(10, 14, 23, 0.8) 0%,
+                rgba(10, 14, 23, 0.8) 40%,
+                rgba(106, 17, 203, 0.1) 50%,
+                rgba(0, 183, 255, 0.1) 60%,
+                rgba(10, 14, 23, 0.8) 70%
+            );
+            animation: gradient-shift 15s linear infinite;
+            z-index: -1;
+        }
+        
+        .animated-bg::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%230077ff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E"),
+                linear-gradient(rgba(10, 14, 23, 0.7), rgba(10, 14, 23, 0.7));
+            z-index: -2;
+        }
+        
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            display: block;
+            background-color: var(--accent-color);
+            width: 2px;
+            height: 2px;
+            border-radius: 50%;
+            opacity: 0;
+            animation: particle-animation 8s linear infinite;
+        }
+        
+        @keyframes particle-animation {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-20vh) translateX(20vw);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes gradient-shift {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            border-bottom: 2px solid var(--accent-color);
+            margin-bottom: 30px;
+            position: relative;
+            background-color: rgba(10, 14, 23, 0.7);
+            backdrop-filter: blur(5px);
+            border-radius: 8px;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(0,183,255,0.1), rgba(0,0,0,0));
+            z-index: -1;
+            border-radius: 8px;
+        }
+        
+        h1 {
+            font-family: 'Comic Neue', 'Courier New', monospace;
+            font-weight: 700;
+            font-size: 2.5em;
+            margin: 0;
+            color: var(--accent-color);
+            text-shadow: 0 0 10px rgba(0,183,255,0.5);
+        }
+        
+        h2 {
+            font-family: 'Comic Neue', 'Courier New', monospace;
+            font-weight: 700;
+            color: var(--accent-color);
+            border-bottom: 1px solid var(--accent-color);
+            padding-bottom: 5px;
+        }
+        
+        h3 {
+            font-family: 'Comic Neue', 'Courier New', monospace;
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+        
+        .welcome {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border-left: 4px solid var(--accent-color);
+            backdrop-filter: blur(5px);
+            background-color: rgba(20, 28, 43, 0.8);
+        }
+        
+        .challenge {
+            background-color: rgba(20, 28, 43, 0.8);
+            backdrop-filter: blur(5px);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            display: none;
+            border-left: 4px solid var(--secondary-color);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #challenge1 {
+            display: block;
+        }
+        
+        .challenge::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(0,0,0,0) 70%);
+            z-index: 0;
+        }
+        
+        .challenge-header {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .challenge-header::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                transparent, 
+                rgba(255, 255, 255, 0.1), 
+                transparent
+            );
+            transform: rotate(30deg);
+            animation: shine 3s infinite;
+        }
+        
+        @keyframes shine {
+            0% {
+                left: -50%;
+            }
+            100% {
+                left: 150%;
+            }
+        }
+        
+        .challenge-header .points {
+            background-color: rgba(0,0,0,0.3);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+        
+        .clue {
+            background-color: rgba(255, 253, 231, 0.1);
+            border-left: 5px solid var(--accent-color);
+            padding: 10px 15px;
+            margin: 15px 0;
+            font-family: 'Comic Neue', 'Courier New', monospace;
+        }
+        
+        .terminal {
+            background-color: var(--terminal-bg);
+            color: var(--terminal-text);
+            font-family: 'Comic Neue', 'Courier New', monospace;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow-x: auto;
+            position: relative;
+        }
+        
+        .terminal::before {
+            content: "$ ";
+            color: var(--accent-color);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--accent-color);
+            font-family: 'Comic Neue', 'Courier New', monospace;
+        }
+        
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--terminal-bg);
+            border: 1px solid var(--accent-color);
+            border-radius: 5px;
+            color: var(--terminal-text);
+            font-family: 'Comic Neue', 'Courier New', monospace;
+            font-size: 1em;
+        }
+        
+        input[type="text"]::placeholder, input[type="password"]::placeholder {
+            color: rgba(0, 255, 157, 0.5);
+        }
+        
+        button {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Comic Neue', 'Courier New', monospace;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        button:hover {
+            background-color: var(--secondary-color);
+            box-shadow: 0 0 15px rgba(106, 17, 203, 0.5);
+        }
+        
+        .detective-image {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            border: 1px solid var(--accent-color);
+        }
+        
+        .result {
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 5px;
+            display: none;
+            font-family: 'Comic Neue', 'Courier New', monospace;
+        }
+        
+        .correct {
+            background-color: rgba(0, 255, 157, 0.1);
+            border-left: 5px solid var(--success-color);
+            color: var(--success-color);
+        }
+        
+        .incorrect {
+            background-color: rgba(255, 56, 96, 0.1);
+            border-left: 5px solid var(--error-color);
+            color: var(--error-color);
+        }
+        
+        .challenge-list {
+            background-color: rgba(20, 28, 43, 0.8);
+            backdrop-filter: blur(5px);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        
+        .challenge-list ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        .challenge-list li {
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            background-color: rgba(20, 28, 43, 0.7);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .challenge-list li:hover {
+            background-color: rgba(0, 183, 255, 0.1);
+        }
+        
+        .challenge-list li.unlocked {
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .challenge-list li.locked {
+            border-left: 4px solid var(--error-color);
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            text-transform: uppercase;
+        }
+        
+        .locked-badge {
+            background-color: var(--error-color);
+            color: var(--bg-color);
+        }
+        
+        .unlocked-badge {
+            background-color: var(--success-color);
+            color: var(--bg-color);
+        }
+        
+        .solved-badge {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            border-top: 1px solid var(--accent-color);
+            color: var(--text-color);
+            font-size: 0.9em;
+            background-color: rgba(10, 14, 23, 0.7);
+            backdrop-filter: blur(5px);
+            border-radius: 8px;
+        }
+        
+        .congratulations {
+            background-color: rgba(20, 28, 43, 0.8);
+            backdrop-filter: blur(5px);
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            text-align: center;
+            display: none;
+            border: 2px solid var(--success-color);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .congratulations::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, rgba(0,255,157,0.1) 0%, rgba(0,0,0,0) 70%);
+            z-index: -1;
+        }
+        
+        .certificate {
+            background-color: rgba(255, 253, 231, 0.05);
+            border: 2px solid var(--conan-blue);
+            padding: 30px;
+            margin: 30px auto;
+            max-width: 600px;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(45deg, var(--conan-blue), var(--conan-red));
+            color: var(--text-color);
+            box-shadow: 0 0 15px rgba(0, 183, 255, 0.5);
+        }
+        
+        .certificate::before {
+            content: "🔍";
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 2em;
+            opacity: 0.3;
+        }
+        
+        .certificate::after {
+            content: "🔍";
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 2em;
+            opacity: 0.3;
+        }
+        
+        .certificate img {
+            max-width: 150px;
+            border-radius: 50%;
+            border: 3px solid var(--conan-red);
+            margin-bottom: 20px;
+        }
+        
+        .certificate h2 {
+            font-size: 2em;
+            color: var(--success-color);
+            margin-bottom: 20px;
+            border-bottom: none;
+            text-shadow: 0 0 5px var(--conan-blue);
+        }
+        
+        .certificate h3 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+        
+        .certificate p {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        
+        .certificate .signature {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 1.8em;
+            margin-top: 40px;
+            color: var(--conan-red);
+        }
+        
+        .certificate .detective-note {
+            font-style: italic;
+            color: var(--success-color);
+            margin-top: 20px;
+        }
+        
+        .hint-btn {
+            background-color: transparent;
+            color: var(--accent-color);
+            border: 1px solid var(--accent-color);
+            padding: 8px 15px;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+        
+        .hint-btn:hover {
+            background-color: rgba(0, 183, 255, 0.1);
+            box-shadow: none;
+        }
+        
+        .hint {
+            display: none;
+            background-color: rgba(0, 183, 255, 0.1);
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-style: italic;
+        }
+        
+        .cipher {
+            font-family: 'Comic Neue', monospace;
+            background-color: var(--terminal-bg);
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            font-size: 1.2em;
+            letter-spacing: 1px;
+            color: var(--terminal-text);
+            text-align: center;
+        }
+        
+        .progress-container {
+            width: 100%;
+            background-color: var(--terminal-bg);
+            border-radius: 20px;
+            margin: 20px 0;
+            height: 20px;
+            position: relative;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background-color: var(--accent-color);
+            border-radius: 20px;
+            width: 0%;
+            transition: width 0.5s;
+        }
+        
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--text-color);
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+        
+        .flag-format {
+            font-family: 'Comic Neue', monospace;
+            color: var(--accent-color);
+            background-color: rgba(0, 183, 255, 0.1);
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        
+        .hidden-data {
+            display: none;
+        }
+        
+        .image-container {
+            position: relative;
+            margin: 20px 0;
+            display: inline-block;
+        }
+        
+        .image-container img {
+            max-width: 100%;
+            border-radius: 8px;
+            border: 1px solid var(--accent-color);
+        }
+        
+        .image-container .magnifier {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border: 2px solid var(--accent-color);
+            border-radius: 50%;
+            pointer-events: none;
+            display: none;
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: brightness(1.5);
+            z-index: 10;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .challenge-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .challenge-header .points {
+                margin-top: 10px;
+            }
+            
+            .certificate img {
+                max-width: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!--flag1: Azeqsdwxcgg99! -->
+    <!-- CONAN{sherlock_holmes} -->   
+    <!-- conan{RESTAURANT} -->
+    <!-- CONAN{ls/cd/pwd/mkdir/cat} -->
+    <!-- conan{kaito kuroba} -->
+    <div class="animated-bg"></div>
+    <div class="particles" id="particles"></div>
+    
+    <div class="container">
+        <header>
+            <h1>Super Défi CTF de Détective Conan 🕵️‍♂️</h1>
+            <img src="club.png" alt="Detective Club" class="corner-image" title="Detective Boys Club">
+            <p>Attrape les Drapeaux : Mission Cyber-Fun ! 🎉</p>
+        </header>
+
+        <div class="welcome">
+            <h2>Salut, Mini-Détective Cyber ! 🚨</h2>
+            <img src="conan.jpg" alt="Détective Conan" class="detective-image">
+            <p>Yo, super agent ! L'Organisation Noire fait des bêtises sur Internet, et Conan a besoin de TOI pour les arrêter ! 😎</p>
+            <p>C’est un jeu de "Capture The Flag" (CTF) où tu dois trouver des drapeaux cachés. Ils ressemblent à ça : <span class="flag-format">CONAN{quelque_chose}</span>. Trop cool, non ? 🧩</p>
+            <p>Résous chaque mission pour débloquer la suivante. Prêt à devenir le meilleur Cyber-Détective ? Allez, go ! 🔥</p>
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+                <div class="progress-text">0/5 Missions Réussies</div>
+            </div>
+            
+            <h3>État des Missions :</h3>
+            <div class="challenge-list">
+                <ul>
+                    <li id="nav-challenge1" class="unlocked" onclick="showChallenge(1)">
+                        <span>Mission #1 : Mot de Passe Méga-Fort 💪</span>
+                        <span class="status-badge unlocked-badge">Ouvert</span>
+                    </li>
+                    <li id="nav-challenge2" class="locked">
+                        <span>Mission #2 : Message Ultra-Caché 🕵️</span>
+                        <span class="status-badge locked-badge">Verrouillé</span>
+                    </li>
+                    <li id="nav-challenge3" class="locked">
+                        <span>Mission #3 : Code Secret 😈</span>
+                        <span class="status-badge locked-badge">Verrouillé</span>
+                    </li>
+                    <li id="nav-challenge4" class="locked">
+                        <span>Mission #4 : Fouille Numérique 🖥️</span>
+                        <span class="status-badge locked-badge">Verrouillé</span>
+                    </li>
+                    <li id="nav-challenge5" class="locked">
+                        <span>Mission #5 : Enigme Finale 🎯</span>
+                        <span class="status-badge locked-badge">Verrouillé</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Challenge 1: Password Strength -->
+        <div id="challenge1" class="challenge">
+            <div class="challenge-header">
+                <h2>Mission #1 : Mot de Passe Méga-Fort 💪</h2>
+                <span class="points">100 points</span>
+            </div>
+            
+            <img src="pass2.webp" alt="Défi mot de passe" class="detective-image">
+            
+            <h3>La Mission</h3>
+            <p>Conan doit protéger ses dossiers secrets avec un mot de passe SUPER fort ! L’Organisation Noire a des machines diaboliques pour deviner les mots de passe, alors fais gaffe ! 😱</p>
+            
+            <div class="terminal">
+                Un mot de passe fort, c’est :
+                - Au moins 12 lettres ou chiffres
+                - Des majuscules ET minuscules
+                - Des chiffres ET des symboles bizarres
+                - Pas un mot qu’on trouve dans le dico !
+            </div>
+            
+            <div class="clue">
+                <h3>Indice Magique ✨ 1</h3>
+                <p>Crée une phrase rigolote avec des mots bizarres, des chiffres et des symboles, comme "PizzaLune42!ChienVolant" ! 🐶</p>
+            </div>
+            
+            <div class="clue">
+                <h3>Indice Magique ✨ 2</h3>
+                <p>Un gestionnaire de mots de passe, c’est comme un coffre-fort pour tes secrets ! 🔒</p>
+            </div>
+            
+            <div class="clue">
+                <h3>Indice Magique ✨ 3</h3>
+                <p>Ne réutilise JAMAIS le même mot de passe partout, sinon les méchants gagnent ! 😈</p>
+            </div>
+            
+            <h3>Ta Mission</h3>
+            <p>Invente un mot de passe ultra-puissant pour Conan ! 🦸‍♂️</p>
+            
+            <form id="passwordForm">
+                <div class="form-group">
+                    <label for="password">Tape ton mot de passe :</label>
+                    <input type="password" id="password" name="password" placeholder="Crée un mot de passe génial" required>
+                    <div class="password-strength-meter">
+                        <div id="password-strength-bar" class="strength-bar"></div>
+                    </div>
+                </div>
+                <button type="submit">Envoyer le Mot de Passe</button>
+                <button type="button" class="hint-btn" onclick="showPasswordHint()">Un petit indice ?</button>
+            </form>
+            
+            <div id="passwordHint" class="hint" style="display:none;">
+            
+            </div>
+            
+            <div id="passwordResult" class="result"></div>
+        </div>
+
+        <!-- Challenge 2: Steganography -->
+        <div id="challenge2" class="challenge">
+            <div class="challenge-header">
+                <h2>Mission #2 : Message Ultra-Caché 🕵️</h2>
+                <span class="points">200 points</span>
+            </div>
+            
+            <h3>La Mission</h3>
+            <p>Conan a trouvé une image louche qui cache un message secret de l’Organisation Noire. Trouve-le, vite ! 🕶️</p>
+            
+            <div class="image-container">
+                <img src="./zoom.jpg" alt="Image avec message caché" class="detective-image" id="stegImage">
+                <div class="magnifier" id="magnifier"></div>
+            </div>
+            
+            <div class="clue">
+                <h3>Indice Magique ✨ 1</h3>
+                <p>Parfois, les secrets sont sous ton nez ! Regarde bien l’image. 👀</p>
+            </div>
+            
+            <div class="clue">
+                <h3>Indice Magique ✨ 2</h3>
+                <p>Zoome sur chaque coin de l’image. Le message est peut-être tout petit ! 🔍</p>
+            </div>
+            
+            <div class="clue">
+                <h3>Indice Magique ✨ 3</h3>
+                <p>Le message parle d’un détective que Conan admire beaucoup. 🕵️‍♂️</p>
+            </div>
+            
+            <div class="hidden-data" id="stegSolution">CONAN{sherlock_holmes}</div>
+            
+            <h3>Ta Mission</h3>
+            <p>Découvre le message caché et envoie-le comme drapeau ! 🚩</p>
+            
+            <form id="stegForm">
+                <div class="form-group">
+                    <label for="flag2">Tape le drapeau :</label>
+                    <input type="text" id="flag2" name="flag2" placeholder="CONAN{...}" required>
+                </div>
+                <button type="submit">Envoyer le Drapeau</button>
+                <button type="button" class="hint-btn" onclick="showHint('hint2')">Un petit indice ?</button>
+            </form>
+            
+            <div id="hint2" class="hint">
+               
+            </div>
+            
+            <div id="stegResult" class="result"></div>
+        </div>
+
+        <!-- Challenge 3: Cipher Challenge -->
+        <div id="challenge3" class="challenge">
+            <div class="challenge-header">
+                <h2>Mission #3 : Code Secret 😈</h2>
+                <span class="points">300 points</span>
+            </div>
+            
+            <img src="cry2.jpg" alt="Défi cryptographique" class="detective-image">
+            
+            <h3>La Mission</h3>
+            <p>Conan a intercepté un message codé des méchants. C’est un code où chaque lettre est remplacée par une autre. Décrypte-le ! 🧠</p>
+            
+            <div class="cipher">
+                JVUHU TLLA TL HA YLZAHBYHUA AVTVYYVD
+            </div>
+            
+            <div class="clue">
+                <h3>Indice Magique ✨ 1</h3>
+                <p>C’est un code César, où chaque lettre est décalée dans l’alphabet. 🔢</p>
+            </div>
+            
+            <div class="clue">
+                <h3>Indice Magique ✨ 2</h3>
+                <p>Le décalage habituel est 3, mais là, c’est différent. 🤔</p>
+            </div>
+            
+            <div class="clue">
+                <h3>Indice Magique ✨ 3</h3>
+                <p>Teste plusieurs décalages jusqu’à ce que le message soit clair en anglais. 📜</p>
+            </div>
+            
+            <h3>Ta Mission</h3>
+            <p>Décrypte le message et trouve le nom du lieu de rendez-vous. Envoie-le comme drapeau ! 🚩</p>
+            
+            <form id="cipherForm">
+                <div class="form-group">
+                    <label for="flag3">Tape le drapeau :</label>
+                    <input type="text" id="flag3" name="flag3" placeholder="CONAN{...}" required>
+                </div>
+                <button type="submit">Envoyer le Drapeau</button>
+                <button type="button" class="hint-btn" onclick="showHint('hint3')">Un petit indice ?</button>
+            </form>
+            
+            <div id="hint3" class="hint">
+               
+            </div>
+            
+            <div id="cipherResult" class="result"></div>
+        </div>
+
+        <!-- Challenge 4: Linux Commands -->
+        <div id="challenge4" class="challenge">
+            <div class="challenge-header">
+                <h2>Mission #4 : Fouille Numérique 🖥️</h2>
+                <span class="points">400 points</span>
+            </div>
+            
+            <img src="0054237.webp" alt="Défi Linux" class="detective-image">
+            
+            <h3>La Mission</h3>
+            <p>L’Organisation Noire a caché un secret dans un ordinateur avec un terminal Linux. Aide Conan à explorer les commandes pour le trouver ! 🖥️</p>
+            
+            <div class="terminal">
+                Tape ces commandes pour fouiller l’ordinateur :
+                <br>- Liste les fichiers
+                <br>- Change de dossier
+                <br>- Vois où tu es
+                <br>- Crée un dossier
+                <br>- Lis un fichier
+            </div>
+            
+            <div class="clue">
+                <h3>Indice Magique ✨ 1</h3>
+                <p>`xx` montre tous les fichiers, comme ouvrir une boîte à jouets ! 🎁</p>
+            </div>
+            
+            <div class="clue">
+                <h3>Indice Magique ✨ 2</h3>
+                <p>`xx` te fait voyager dans un autre dossier, comme changer de pièce ! 🚪</p>
+            </div>
+            
+            <div class="clue">
+                <h3>Indice Magique ✨ 3</h3>
+                <p>`xxx` te dit exactement où tu es, comme une carte au trésor ! 🗺️</p>
+            </div>
+            
+            <div class="clue">
+                <h3>Indice Magique ✨ 4</h3>
+                <p>`xxxxx` crée un nouveau dossier, comme construire une cabane ! 🏠</p>
+            </div>
+            
+            <div class="clue">
+                <h3>Indice Magique ✨ 5</h3>
+                <p>`xxx` affiche ce qu’il y a dans un fichier, comme lire une lettre secrète ! 📜</p>
+            </div>
+            
+            <h3>Ta Mission</h3>
+            <p>Le drapeau est : conan{indice1/indice2/indice3/indice4/indice5} 🚩</p>
+            
+            <form id="sourceForm">
+                <div class="form-group">
+                    <label for="flag4">Tape le drapeau :</label>
+                    <input type="text" id="flag4" name="flag4" placeholder="CONAN{...}" required>
+                </div>
+                <button type="submit">Envoyer le Drapeau</button>
+                <button type="button" class="hint-btn" onclick="showHint('hint4')">Un petit indice ?</button>
+            </form>
+            
+            <div id="hint4" class="hint">
+                
+            </div>
+            
+            <div id="sourceResult" class="result"></div>
+        </div>
+
+        <!-- Challenge 5: Logic Puzzle -->
+        <div id="challenge5" class="challenge">
+            <div class="challenge-header">
+                <h2>Mission #5 : Enigme Finale 🎯</h2>
+                <span class="points">500 points</span>
+            </div>
+            
+            <img src="final.jpg" alt="Enigme finale" class="detective-image">
+            
+            <h3>La Mission</h3>
+            <p>Tu es au dernier défi ! L’Organisation Noire a créé une énigme tordue pour protéger ses plans. Résous-la pour gagner ! 🏆</p>
+            
+            <div class="terminal">
+                C’est qui, moi ? 🤔
+                <img src="Kaito Kuroba.jpeg" alt="Enigme finale" class="detective-image">
+            </div>
+            
+            <div class="clue">
+                <h3>Indice Magique ✨ 1</h3>
+                <p>Épisodes 132-134 : "L’Affaire des Amoureux de Magie" 🎩</p>
+            </div>
+            
+            <h3>Ta Mission</h3>
+            <p>Attrape-moi si tu peux ! 😜</p>
+            
+            <form id="riddleForm">
+                <div class="form-group">
+                    <label for="flag5">Tape le drapeau :</label>
+                    <input type="text" id="flag5" name="flag5" placeholder="CONAN{...}" required>
+                </div>
+                <button type="submit">Envoyer le Drapeau</button>
+                <button type="button" class="hint-btn" onclick="showHint('hint5')">Un petit indice ?</button>
+            </form>
+            
+            <div id="hint5" class="hint">
+               
+            </div>
+            
+            <div id="riddleResult" class="result"></div>
+        </div>
+
+        <!-- Congratulations Section -->
+        <div id="congratulations" class="congratulations">
+            <h2>Bravo, Super Cyber-Détective ! 🎉</h2>
+            <img src="congra.jpg" alt="Félicitations" class="detective-image">
+            
+            <p>Génial ! Tu as battu les 5 missions CTF et aidé Conan à stopper les méchants de l’Organisation Noire ! T’es un champion ! 🦸‍♂️</p>
+            
+            <div class="certificate">
+                <img src="https://via.placeholder.com/150.png?text=Conan+Edogawa" alt="Conan Edogawa" class="detective-image">
+                <h2>Certificat de Héros Détective</h2>
+                <h3>Maître des Mystères Numériques</h3>
+                <p>Ceci prouve que</p>
+                <p><strong>TOI</strong></p>
+                <p>as triomphé des 5 défis du</p>
+                <p>Super Défi Cyber de Détective Conan</p>
+                <p>et es maintenant un</p>
+                <p><strong>Expert Cyber Légendaire</strong></p>
+                <p class="detective-note">Certifié par les Detective Boys ! 🔍</p>
+                <div class="signature">Conan Edogawa</div>
+            </div>
+            
+            <p>Tu es trop fort en :</p>
+            <ul>
+                <li>Création de mots de passe invincibles 💪</li>
+                <li>Trouver des messages cachés 🕵️</li>
+                <li>Déchiffrer des codes secrets 🔢</li>
+                <li>Fouiller dans les terminaux Linux 🖥️</li>
+                <li>Résoudre des énigmes tordues 🧠</li>
+            </ul>
+            
+            <button onclick="resetChallenges()">Recommencer l’Aventure</button>
+        </div>
+        
+        <footer>
+            <p>Super Défi CTF de Détective Conan © 2025 | Pour les jeunes détectives cyber ! 🌟</p>
+        </footer>
+    </div>
+
+    <script>
+        // Create floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                particle.style.left = `${posX}vw`;
+                particle.style.top = `${posY}vh`;
+                
+                const size = Math.random() * 3 + 1;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                const delay = Math.random() * 5;
+                const duration = Math.random() * 10 + 5;
+                particle.style.animationDelay = `${delay}s`;
+                particle.style.animationDuration = `${duration}s`;
+                
+                const colors = ['#00b7ff', '#6a11cb', '#00ff9d'];
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        let completedChallenges = [false, false, false, false, false];
+        
+        function updateProgress() {
+            const completed = completedChallenges.filter(Boolean).length;
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.querySelector('.progress-text');
+            
+            progressBar.style.width = `${(completed / 5) * 100}%`;
+            progressText.textContent = `${completed}/5 Missions Réussies`;
+        }
+        
+        function showChallenge(challengeNumber) {
+            if (challengeNumber > 1 && !completedChallenges[challengeNumber - 2]) {
+                return;
+            }
+            
+            document.querySelectorAll('.challenge').forEach(challenge => {
+                challenge.style.display = 'none';
+            });
+            
+            document.getElementById('challenge' + challengeNumber).style.display = 'block';
+            
+            document.getElementById('challenge' + challengeNumber).scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+        
+        function showHint(hintId) {
+            const hint = document.getElementById(hintId);
+            hint.style.display = hint.style.display === 'block' ? 'none' : 'block';
+        }
+        
+        function unlockNextChallenge(currentChallenge) {
+            completedChallenges[currentChallenge - 1] = true;
+            updateProgress();
+            
+            if (currentChallenge < 5) {
+                const nextNav = document.getElementById('nav-challenge' + (currentChallenge + 1));
+                nextNav.classList.remove('locked');
+                nextNav.classList.add('unlocked');
+                nextNav.onclick = function() {
+                    showChallenge(currentChallenge + 1);
+                };
+                
+                const badge = nextNav.querySelector('.status-badge');
+                badge.textContent = 'Ouvert';
+                badge.className = 'status-badge unlocked-badge';
+                
+                const currentNav = document.getElementById('nav-challenge' + currentChallenge);
+                const currentBadge = currentNav.querySelector('.status-badge');
+                currentBadge.textContent = 'Réussi';
+                currentBadge.className = 'status-badge solved-badge';
+                
+                setTimeout(() => {
+                    showChallenge(currentChallenge + 1);
+                }, 1500);
+            } else {
+                const currentNav = document.getElementById('nav-challenge' + currentChallenge);
+                const currentBadge = currentNav.querySelector('.status-badge');
+                currentBadge.textContent = 'Réussi';
+                currentBadge.className = 'status-badge solved-badge';
+                
+                setTimeout(() => {
+                    document.querySelectorAll('.challenge').forEach(challenge => {
+                        challenge.style.display = 'none';
+                    });
+                    document.getElementById('congratulations').style.display = 'block';
+                    document.getElementById('congratulations').scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }, 1500);
+            }
+        }
+        
+        function resetChallenges() {
+            completedChallenges = [false, false, false, false, false];
+            updateProgress();
+            
+            for (let i = 2; i <= 5; i++) {
+                const nav = document.getElementById('nav-challenge' + i);
+                nav.classList.remove('unlocked');
+                nav.classList.add('locked');
+                nav.onclick = null;
+                
+                const badge = nav.querySelector('.status-badge');
+                badge.textContent = 'Verrouillé';
+                badge.className = 'status-badge locked-badge';
+            }
+            
+            const firstBadge = document.getElementById('nav-challenge1').querySelector('.status-badge');
+            firstBadge.textContent = 'Ouvert';
+            firstBadge.className = 'status-badge unlocked-badge';
+            
+            document.getElementById('passwordForm').reset();
+            document.getElementById('stegForm').reset();
+            document.getElementById('cipherForm').reset();
+            document.getElementById('sourceForm').reset();
+            document.getElementById('riddleForm').reset();
+            
+            document.querySelectorAll('.result').forEach(result => {
+                result.style.display = 'none';
+                result.textContent = '';
+                result.className = 'result';
+            });
+            
+            document.querySelectorAll('.hint').forEach(hint => {
+                hint.style.display = 'none';
+            });
+            
+            document.getElementById('congratulations').style.display = 'none';
+            
+            showChallenge(1);
+        }
+        
+        document.getElementById('passwordForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const password = document.getElementById('password').value;
+            const result = document.getElementById('passwordResult');
+            
+            const isLongEnough = password.length >= 12;
+            const hasUppercase = /[A-Z]/.test(password);
+            const hasLowercase = /[a-z]/.test(password);
+            const hasNumber = /[0-9]/.test(password);
+            const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+            const isCommonPassword = checkCommonPasswords(password);
+            
+            if (isLongEnough && hasUppercase && hasLowercase && hasNumber && hasSpecialChar && !isCommonPassword) {
+                result.textContent = "WOW ! Ton mot de passe est plus fort que le coup de pied de Conan ! T’as battu les méchants ! 🎉";
+                result.className = 'result correct';
+                result.style.display = 'block';
+                
+                unlockNextChallenge(1);
+            } else {
+                let errorMessage = "Oups, ton mot de passe doit être plus costaud :";
+                if (!isLongEnough) errorMessage += "\n- Il faut au moins 12 caractères !";
+                if (!hasUppercase) errorMessage += "\n- Ajoute des lettres MAJUSCULES !";
+                if (!hasLowercase) errorMessage += "\n- Ajoute des lettres minuscules !";
+                if (!hasNumber) errorMessage += "\n- Mets au moins un chiffre !";
+                if (!hasSpecialChar) errorMessage += "\n- Ajoute un symbole bizarre !";
+                if (isCommonPassword) errorMessage += "\n- Pas d'exemple des indices, petit malin ! 😜";
+                
+                result.textContent = errorMessage;
+                result.className = 'result incorrect';
+                result.style.display = 'block';
+            }
+        });
+        
+        document.getElementById('password').addEventListener('input', function() {
+            const password = this.value;
+            const strengthBar = document.getElementById('password-strength-bar');
+            
+            let strength = 0;
+            if (password.length >= 12) strength += 25;
+            if (/[A-Z]/.test(password)) strength += 15;
+            if (/[a-z]/.test(password)) strength += 15;
+            if (/[0-9]/.test(password)) strength += 15;
+            if (/[^A-Za-z0-9]/.test(password)) strength += 20;
+            if (password.length >= 16) strength += 10;
+            
+            strengthBar.style.width = Math.min(strength, 100) + '%';
+            strengthBar.style.backgroundColor = 
+                strength < 40 ? 'red' : 
+                strength < 70 ? 'orange' : 
+                strength < 90 ? 'yellow' : 'green';
+        });
+        
+        function showPasswordHint() {
+            document.getElementById('passwordHint').style.display = 'block';
+        }
+        
+        function checkCommonPasswords(password) {
+            const commonPasswords = [
+                'password', 
+                '123456', 
+                'qwerty', 
+                'letmein', 
+                'welcome', 
+                'admin', 
+                'PizzaLune42!ChienVolant'
+            ];
+            return commonPasswords.some(common => password.toLowerCase().includes(common.toLowerCase()));
+        }
+        
+        document.getElementById('stegForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const flag = document.getElementById('flag2').value.trim();
+            const result = document.getElementById('stegResult');
+            const solution = document.getElementById('stegSolution').textContent;
+            
+            if (flag.toLowerCase() === solution.toLowerCase()) {
+                result.textContent = "Trop fort ! T’as trouvé le message caché comme un vrai détective ! 🕵️‍♂️";
+                result.className = 'result correct';
+                result.style.display = 'block';
+                
+                unlockNextChallenge(2);
+            } else {
+                result.textContent = "Aïe, ce n’est pas le bon drapeau. Cherche mieux dans l’image ! 👀";
+                result.className = 'result incorrect';
+                result.style.display = 'block';
+            }
+        });
+        
+        document.getElementById('cipherForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const flag = document.getElementById('flag3').value.trim();
+            const result = document.getElementById('cipherResult');
+            
+            if (flag.toLowerCase() === 'conan{restaurant}') {
+                result.textContent = "Bravo ! T’as craqué le code César avec un décalage de 7. Le message était : 'THERE WILL BE A MEETING AT GIN RESTAURANT TOMORROW' ! 🎉";
+                result.className = 'result correct';
+                result.style.display = 'block';
+                
+                unlockNextChallenge(3);
+            } else {
+                result.textContent = "Oups, mauvais drapeau. Essaie d’autres décalages et trouve le nom du restaurant ! 🍽️";
+                result.className = 'result incorrect';
+                result.style.display = 'block';
+            }
+        });
+        
+        document.getElementById('sourceForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const flag = document.getElementById('flag4').value.trim();
+            const result = document.getElementById('sourceResult');
+            
+            if (flag.toLowerCase() === 'conan{ls/cd/pwd/mkdir/cat}') {
+                result.textContent = "T’es un génie ! T’as trouvé le drapeau caché dans le terminal ! 🖥️";
+                result.className = 'result correct';
+                result.style.display = 'block';
+                
+                unlockNextChallenge(4);
+            } else {
+                result.textContent = "Pas le bon drapeau. Combine les commandes des indices avec des / ! 🔎";
+                result.className = 'result incorrect';
+                result.style.display = 'block';
+            }
+        });
+        
+        document.getElementById('riddleForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const flag = document.getElementById('flag5').value.trim();
+            const result = document.getElementById('riddleResult');
+            
+            if (flag.toLowerCase() === 'conan{kaito kuroba}') {
+                result.textContent = "Incroyable ! T’as résolu l’énigme finale comme un pro ! 🏆";
+                result.className = 'result correct';
+                result.style.display = 'block';
+                
+                unlockNextChallenge(5);
+            } else {
+                result.textContent = "Oups, ce n’est pas le bon drapeau. Vérifie bien les indices de l’énigme ! 🤔";
+                result.className = 'result incorrect';
+                result.style.display = 'block';
+            }
+        });
+        
+        const stegImage = document.getElementById('stegImage');
+        const magnifier = document.getElementById('magnifier');
+        
+        if (stegImage && magnifier) {
+            stegImage.addEventListener('mousemove', function(e) {
+                magnifier.style.display = 'block';
+                
+                const rect = stegImage.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                magnifier.style.left = `${x - 50}px`;
+                magnifier.style.top = `${y - 50}px`;
+                
+                const backgroundX = x * 3;
+                const backgroundY = y * 3;
+                magnifier.style.backgroundImage = `url(${stegImage.src})`;
+                magnifier.style.backgroundPosition = `-${backgroundX}px -${backgroundY}px`;
+                magnifier.style.backgroundSize = `${stegImage.width * 3}px ${stegImage.height * 3}px`;
+            });
+            
+            stegImage.addEventListener('mouseleave', function() {
+                magnifier.style.display = 'none';
+            });
+        }
+        
+        window.onload = function() {
+            createParticles();
+            updateProgress();
+        };
+    </script>
+</body>
+</html>
