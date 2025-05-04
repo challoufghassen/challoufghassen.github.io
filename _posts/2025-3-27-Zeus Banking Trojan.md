@@ -8,6 +8,41 @@ image: images/malawar/zeuss.jpg
 
 # Malware Analysis Report: zeus.pdf.exe
 
+# Zeus Trojan Overview
+
+## Background Information
+- **Purpose:** Primarily created to be a financial banking trojan.
+- **First Spotted:** 2007, when Zeus Trojan was caught stealing sensitive information from systems owned by the **U.S. Department of Transportation**.
+- **Variants:** Over **573 known versions** and **36 known families**, according to [Zeus Museum](https://zeusmuseum.com/).
+- **Code Leak:** Malicious code became public in **2011** after a leak.
+- **Suspected Author:** *Evgeniy Mikhailovich Bogachev*  
+  - Source: [Krebs on Security](https://krebsonsecurity.com/2015/02/fbi-3m-bounty-for-zeus-trojan-author/)
+
+## Delivery Methods
+- **Drive-by Downloads**  
+  - Users visit a compromised website hosting the backdoor trojan.  
+  - Now largely **obsolete** due to modern browser protections.
+  
+- **Phishing & Spam Campaigns**  
+  - **Primary infection method** in modern attacks.  
+  - Victims are tricked into downloading and executing malicious attachments or links.
+
+## Primary Goals
+- **Steal financial information** from infected systems.
+- **Exfiltrate** sensitive banking data.
+- **Add infected machines to a botnet**, often P2P-based (depends on Zeus family).
+
+## Crackdown History
+- **Gameover Zeus** (a major variant) was taken down by the **FBI in 2014**.
+- **Impact in the U.S.:** Estimated **25% of computers** were infected.
+- **Financial Damages:** Over **$100 million**.
+- **Evgeniy Bogachev:** $3 million bounty by the FBI, still **one of the most wanted hackers**.
+
+## Impact
+- Inspired **hundreds of additional malware variants** using parts of Zeus's source code.
+- Resulted in **millions of infected machines**.
+- **Global damages in the hundreds of millions of dollars**.
+
 
 ## Overview
 - **File Name**: `zeus.pdf.exe`
@@ -36,6 +71,9 @@ image: images/malawar/zeuss.jpg
   - Microsoft: `Backdoor:Win32/ZAccess!MTB`
   - Malwarebytes: `Sirefef.Trojan.Bot.DDS`
   - Symantec: `Trojan.Zeroaccess.C`
+  
+## basic capa output
+![VirusTotal Scan Results](images/malawar/capa.PNG)
 
 ### Visual Representation
 
@@ -52,6 +90,17 @@ image: images/malawar/zeuss.jpg
   - Medium: 0 alerts
   - Low: 0 alerts
   - Info: 0 alerts
+## Language Detection
+
+![lang.PNG](images/malawar/lang.PNG)
+- **Probable Languages**:
+  - C#: 60% probability, 3 pattern occurrences
+  - C: 40% probability, 2 pattern occurrences
+## Additional Findings
+- **Embedded PE Files**: None detected.
+- **Registry Keys**: No patterns found.
+- **Special Artifacts**: None identified.
+- **Function Count**: 81 functions analyzed, with sizes ranging from 1 to 1060 bytes; notable large functions (`sub_0040142f`, `sub_00408469`) may indicate complex logic.
 
 ## Windows API Analysis
 - **Total Imports/Exports Analyzed**: 150
@@ -78,12 +127,6 @@ image: images/malawar/zeuss.jpg
 - ![libraries Scan Results](images/malawar/libraries.PNG)
 
 
-## YARA Rule Matches
-- **Keylogger**:
-  - Matches: `USER32.dll` (0x1ec42), `GetAsyncKeyState` (0x1eb4c)
-- **Windows File Operations**:
-  - Matches: `KERNEL32.dll` (0x1ea54), `WriteFile` (0x1e91c), `DeleteFileA` (0x32048), `CreateFileA` (0x3178e), `FindFirstFileA` (0x3190e)
-
 ## Section Analysis
 
 ![VirusTotal Scan Results](images/malawar/section.PNG)
@@ -103,23 +146,11 @@ image: images/malawar/zeuss.jpg
 - **Decoded Strings**: Numerous short strings (e.g., `0BKn`, `pjAb:$a$`, `O8Xu`), likely obfuscated data or keys.
 - **Interesting Patterns**: References to `SHLWAPI.dll`, `KERNEL32.dll`, `USER32.dll`.
 
-## Language Detection
 
-![lang.PNG](images/malawar/lang.PNG)
-- **Probable Languages**:
-  - C#: 60% probability, 3 pattern occurrences
-  - C: 40% probability, 2 pattern occurrences
-## Additional Findings
-- **Embedded PE Files**: None detected.
-- **Registry Keys**: No patterns found.
-- **Special Artifacts**: None identified.
-- **Function Count**: 81 functions analyzed, with sizes ranging from 1 to 1060 bytes; notable large functions (`sub_0040142f`, `sub_00408469`) may indicate complex logic.
 ## File Header
 
 
-## basic capa output
 
-![VirusTotal Scan Results](images/malawar/capa.PNG)
 ## API calls
 - AllowSetForegroundWindow: <span style="background-color: yellow">Allows a specified process to set the foreground window even if the process does not currently own the foreground windows focus.
 </span>
@@ -212,6 +243,12 @@ Under ```wininit.exe``` -> ```svchost.exe``` -> ```GoogleUpdate.exe``` is droppe
 Started  ```inetsim``` to simulate DNS server and Wireshark for packet capture.
 
 ![http.PNG](images/malawar/shark.PNG)
+
+## YARA Rule Matches
+- **Keylogger**:
+  - Matches: `USER32.dll` (0x1ec42), `GetAsyncKeyState` (0x1eb4c)
+- **Windows File Operations**:
+  - Matches: `KERNEL32.dll` (0x1ea54), `WriteFile` (0x1e91c), `DeleteFileA` (0x32048), `CreateFileA` (0x3178e), `FindFirstFileA` (0x3190e)
 # Detection Rues (YARA)
 
 YARA rule used to detect the Zeus Banking Trojan Version 26-Nov-2013.
