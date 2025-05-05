@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BLACK_BOX Terminal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #000;
+      color: #0f0;
+      font-family: 'Source Code Pro', monospace;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .min-h-screen {
+      display: flex;
+      height: 100vh;
+      background: url('matrix-bg.gif') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    .menu {
+      overflow-y: auto; 
+      width: 250px;
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 20px;
+      border-right: 2px solid #0f0;
+    }
+
+    .menu::-webkit-scrollbar {
+      display: none; 
+    }
+
+    .menu-header {
+      color: #0f0;
+      font-size: 1.2em;
+      margin-bottom: 20px;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .category-button, .back-button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      background-color: #111;
+      color: #0f0;
+      border: 1px solid #0f0;
+      font-family: 'Source Code Pro', monospace;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .category-button:hover, .back-button:hover {
+      background-color: #0f0;
+      color: #000;
+    }
+
+    .terminal-window {
+      flex: 1;
+      background-color: rgba(0, 0, 0, 0.8);
+      margin: 20px;
+      border: 2px solid #0f0;
+      box-shadow: 0 0 10px #0f0;
+    }
+
+    .terminal-header {
+      padding: 10px;
+      background-color: #111;
+      border-bottom: 2px solid #0f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .terminal-title {
+      color: #0f0;
+      font-size: 1.2em;
+    }
+
+    .terminal-controls button {
+      background: none;
+      border: none;
+      color: #0f0;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+
+    .terminal-content {
+      padding: 20px;
+      height: calc(100% - 60px);
+      overflow-y: auto;
+    }
+
+    .input-field {
+      width: 100%;
+      height: 100px;
+      background-color: #111;
+      color: #0f0;
+      border: 1px solid #0f0;
+      padding: 10px;
+      font-family: 'Source Code Pro', monospace;
+      resize: none;
+    }
+
+    .valid-button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #0f0;
+      color: #000;
+      border: none;
+      cursor: pointer;
+      font-family: 'Source Code Pro', monospace;
+      transition: background-color 0.3s;
+    }
+
+    .valid-button:hover {
+      background-color: #0c0;
+    }
+
+    @keyframes blink {
+      0% { opacity: 1; }
+      50% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 10px;
+      height: 20px;
+      background-color: #0f0;
+      animation: blink 1s infinite;
+    }
+  </style>
+</head>
+<div class="min-h-screen">
+  <div class="menu">
+    <button class="back-button" onclick="window.location.href='../boxs.html'">Back to Dashboard</button>
+    <div class="menu-header">Penetration Testing Categories</div>
+    <button class="category-button" onclick="showCategory('information-gathering')">Information Gathering</button>
+    <button class="category-button" onclick="showCategory('vulnerability-scanning')">Vulnerability Scanning</button>
+    <button class="category-button" onclick="showCategory('exploitation')">Exploitation</button>
+    <button class="category-button" onclick="showCategory('post-exploitation')">Post-Exploitation</button>
+    <button class="category-button" onclick="showCategory('privilege-escalation')">Privilege Escalation</button>
+    <button class="category-button" onclick="showCategory('pivoting')">Pivoting</button>
+    <button class="category-button" onclick="showCategory('denial-of-service')">Denial of Service Testing</button>
+    <button class="category-button" onclick="showCategory('password-cracking')">Password Cracking</button>
+    <button class="category-button" onclick="showCategory('web-application-testing')">Web Application Testing</button>
+    <button class="category-button" onclick="showCategory('wireless-network-testing')">Wireless Network Testing</button>
+    <button class="category-button" onclick="showCategory('social-engineering')">Social Engineering (if applicable)</button>
+    <button class="category-button" onclick="showCategory('reporting')">Reporting</button>
+  </div>
+
+  <div class="terminal-window">
+    <div class="terminal-header">
+      <div class="flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+          <polyline points="4 17 10 11 4 5"></polyline>
+          <line x1="12" y1="19" x2="20" y2="19"></line>
+        </svg>
+        <div class="terminal-title">BLACK_BOX TERMINAL v1.0</div>
+      </div>
+      <div class="terminal-controls">
+        <button><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
+        <button><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg></button>
+        <button><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+      </div>
+    </div>
+
+    <div class="terminal-content" id="terminal-content">
+      <!-- Initial content: Hello World --> 
+      <p>🖤 <strong>Black Box Testing (No Access)</strong><br>
+        🔹 <strong>Pentester Knowledge:</strong> ❌ No prior knowledge of the system.<br>
+        🔹 <strong>Approach:</strong> Simulates an external hacker attack.<br>
+        🔹 <strong>Methods:</strong> OSINT, reconnaissance, scanning, exploitation.<br>
+        🔹 <strong>Challenges:</strong> Harder to discover deep vulnerabilities due to lack of insider access.<br>
+        🔹 <strong>Tools:</strong> Nmap, Metasploit, Burp Suite, Hydra.<br>
+        💡 <strong>Best For:</strong> Real-world attack simulations, external security assessments.<br>
+        🕵️‍♂️ 🔒 🔍 ⚔️
+        </p>
+        <button class="valid-button">Valid</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Function to show the selected category
+  function showCategory(category) {
+    const content = {
+      "information-gathering": "You selected Information Gathering. Type your command below...",
+      "vulnerability-scanning": "You selected Vulnerability Scanning. Type your command below...",
+      "exploitation": "You selected Exploitation. Type your command below...",
+      "post-exploitation": "You selected Post-Exploitation. Type your command below...",
+      "privilege-escalation": "You selected Privilege Escalation. Type your command below...",
+      "pivoting": "You selected Pivoting. Type your command below...",
+      "denial-of-service": "You selected Denial of Service Testing. Type your command below...",
+      "password-cracking": "You selected Password Cracking. Type your command below...",
+      "web-application-testing": "You selected Web Application Testing. Type your command below...",
+      "wireless-network-testing": "You selected Wireless Network Testing. Type your command below...",
+      "social-engineering": "You selected Social Engineering (if applicable). Type your command below...",
+      "reporting": "You selected Reporting. Type your command below..."
+    };
+
+    document.getElementById('terminal-content').innerHTML = `
+
+      <div>
+        <textarea class="input-field" placeholder="${content[category]}"></textarea>
+        <button class="valid-button">Valid</button>
+        <button class="valid-button" onclick="showHelloWorld()">Back</button>
+        <span class="cursor"></span>
+      </div>
+    `;
+  }
+
+  // Function to return to the "Hello World" message
+  function showHelloWorld() {
+    document.getElementById('terminal-content').innerHTML = `
+      <div>
+        <p>🖤 <strong>Black Box Testing (No Access)</strong><br>
+        🔹 <strong>Pentester Knowledge:</strong> ❌ No prior knowledge of the system.<br>
+        🔹 <strong>Approach:</strong> Simulates an external hacker attack.<br>
+        🔹 <strong>Methods:</strong> OSINT, reconnaissance, scanning, exploitation.<br>
+        🔹 <strong>Challenges:</strong> Harder to discover deep vulnerabilities due to lack of insider access.<br>
+        🔹 <strong>Tools:</strong> Nmap, Metasploit, Burp Suite, Hydra.<br>
+        💡 <strong>Best For:</strong> Real-world attack simulations, external security assessments.<br>
+        🕵️‍♂️ 🔒 🔍 ⚔️
+        </p>
+        <button class="valid-button">Valid</button>
+      </div>
+    `;
+  }
+</script>
+</body>
+</html>

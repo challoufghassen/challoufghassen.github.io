@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding Black Box and Gray Box in Penetration Testing</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Base Styles */
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #121212;
+            --bg-tertiary: #1a1a1a;
+            --text-primary: #f0f0f0;
+            --text-secondary: #a0a0a0;
+            --accent-green: #00ff41;
+            --accent-green-dark: #00cc33;
+            --accent-blue: #0088ff;
+            --accent-yellow: #ffcc00;
+            --accent-red: #ff3333;
+            --accent-purple: #cc33ff;
+            --glow-green: 0 0 10px rgba(0, 255, 65, 0.7);
+            --card-bg: rgba(20, 20, 20, 0.7);
+            --card-border: rgba(0, 255, 65, 0.3);
+            --font-mono: 'Courier New', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(rgba(0, 255, 65, 0.1) 1px, transparent 1px),
+                radial-gradient(rgba(0, 255, 65, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            background-position: 0 0, 25px 25px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--bg-secondary);
+            padding: 20px 0;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid rgba(0, 255, 65, 0.2);
+        }
+
+        .matrix-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, 
+                rgba(0, 255, 70, 0.1) 0%,
+                rgba(0, 255, 70, 0.05) 50%,
+                rgba(0, 255, 70, 0) 100%
+            );
+            opacity: 0.2;
+            z-index: 0;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .logo {
+            font-family: var(--font-mono);
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--accent-green);
+            text-shadow: var(--glow-green);
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .logo span {
+            animation: blink 1.5s infinite;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #ffffff, var(--accent-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-family: var(--font-mono);
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto 40px;
+        }
+
+        /* Main Content */
+        main {
+            padding: 60px 0;
+        }
+
+        .section-title {
+            font-family: var(--font-mono);
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 50px;
+            color: var(--accent-green);
+            text-shadow: var(--glow-green);
+        }
+
+        .intro-section {
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 40px;
+            margin-bottom: 60px;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .intro-text {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .box-types {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        .box-type {
+            flex: 1;
+            min-width: 300px;
+            background-color: var(--bg-tertiary);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .box-type:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .box-type.black-box {
+            border-top: 4px solid var(--accent-blue);
+        }
+
+        .box-type.gray-box {
+            border-top: 4px solid var(--accent-yellow);
+        }
+
+        .box-type.white-box {
+            border-top: 4px solid var(--accent-green);
+        }
+
+        .box-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .black-box .box-icon {
+            color: var(--accent-blue);
+        }
+
+        .gray-box .box-icon {
+            color: var(--accent-yellow);
+        }
+
+        .white-box .box-icon {
+            color: var(--accent-green);
+        }
+
+        .box-title {
+            font-family: var(--font-mono);
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .black-box .box-title {
+            color: var(--accent-blue);
+        }
+
+        .gray-box .box-title {
+            color: var(--accent-yellow);
+        }
+
+        .white-box .box-title {
+            color: var(--accent-green);
+        }
+
+        .box-description {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        /* Detailed Box Sections */
+        .box-section {
+            margin-bottom: 80px;
+        }
+
+        .box-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .box-header-icon {
+            font-size: 2.5rem;
+            margin-right: 20px;
+        }
+
+        .black-box-section .box-header-icon {
+            color: var(--accent-blue);
+        }
+
+        .gray-box-section .box-header-icon {
+            color: var(--accent-yellow);
+        }
+
+        .box-header-title {
+            font-family: var(--font-mono);
+            font-size: 2.2rem;
+        }
+
+        .black-box-section .box-header-title {
+            color: var(--accent-blue);
+        }
+
+        .gray-box-section .box-header-title {
+            color: var(--accent-yellow);
+        }
+
+        .box-content {
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 30px;
+            border: 1px solid var(--card-border);
+        }
+
+        .black-box-section .box-content {
+            border-left: 5px solid var(--accent-blue);
+        }
+
+        .gray-box-section .box-content {
+            border-left: 5px solid var(--accent-yellow);
+        }
+
+        .content-text {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        .feature-list {
+            margin-bottom: 30px;
+        }
+
+        .feature-title {
+            font-family: var(--font-mono);
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .feature-title i {
+            margin-right: 10px;
+        }
+
+        .black-box-section .feature-title {
+            color: var(--accent-blue);
+        }
+
+        .gray-box-section .feature-title {
+            color: var(--accent-yellow);
+        }
+
+        .feature-list ul {
+            list-style: none;
+            padding-left: 30px;
+        }
+
+        .feature-list li {
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .feature-list li:before {
+            content: "→";
+            position: absolute;
+            left: -20px;
+        }
+
+        .black-box-section .feature-list li:before {
+            color: var(--accent-blue);
+        }
+
+        .gray-box-section .feature-list li:before {
+            color: var(--accent-yellow);
+        }
+
+        /* Tools Section */
+        .tools-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px dashed rgba(255, 255, 255, 0.2);
+        }
+
+        .tools-title {
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .black-box-section .tools-title {
+            color: var(--accent-blue);
+        }
+
+        .gray-box-section .tools-title {
+            color: var(--accent-yellow);
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .tool-card {
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            transition: transform 0.3s;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .black-box-section .tool-card {
+            border-left: 3px solid var(--accent-blue);
+        }
+
+        .gray-box-section .tool-card {
+            border-left: 3px solid var(--accent-yellow);
+        }
+
+        .tool-icon {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .black-box-section .tool-icon {
+            color: var(--accent-blue);
+        }
+
+        .gray-box-section .tool-icon {
+            color: var(--accent-yellow);
+        }
+
+        .tool-name {
+            font-family: var(--font-mono);
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .black-box-section .tool-name {
+            color: var(--accent-blue);
+        }
+
+        .gray-box-section .tool-name {
+            color: var(--accent-yellow);
+        }
+
+        .tool-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Example Scenarios */
+        .scenarios-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px dashed rgba(255, 255, 255, 0.2);
+        }
+
+        .scenarios-title {
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .black-box-section .scenarios-title {
+            color: var(--accent-blue);
+        }
+
+        .gray-box-section .scenarios-title {
+            color: var(--accent-yellow);
+        }
+
+        .scenario-card {
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .black-box-section .scenario-card {
+            border-left: 3px solid var(--accent-blue);
+        }
+
+        .gray-box-section .scenario-card {
+            border-left: 3px solid var(--accent-yellow);
+        }
+
+        .scenario-title {
+            font-family: var(--font-mono);
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .scenario-title i {
+            margin-right: 10px;
+        }
+
+        .black-box-section .scenario-title {
+            color: var(--accent-blue);
+        }
+
+        .gray-box-section .scenario-title {
+            color: var(--accent-yellow);
+        }
+
+        .scenario-description {
+            color: var(--text-primary);
+        }
+
+        /* Comparison Table */
+        .comparison-section {
+            margin: 80px 0;
+        }
+
+        .comparison-title {
+            font-family: var(--font-mono);
+            font-size: 2.2rem;
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--accent-green);
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .comparison-table th {
+            background-color: rgba(0, 0, 0, 0.3);
+            font-family: var(--font-mono);
+            font-size: 1.1rem;
+        }
+
+        .comparison-table th:first-child {
+            width: 25%;
+        }
+
+        .comparison-table th:nth-child(2) {
+            color: var(--accent-blue);
+        }
+
+        .comparison-table th:nth-child(3) {
+            color: var(--accent-yellow);
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .comparison-table td:nth-child(2),
+        .comparison-table td:nth-child(3) {
+            font-size: 0.95rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            padding: 80px 0;
+            background: linear-gradient(to bottom, var(--bg-secondary), var(--bg-primary));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(rgba(0, 255, 65, 0.1) 1px, transparent 1px),
+                radial-gradient(rgba(0, 255, 65, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+            opacity: 0.5;
+            z-index: 0;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-title {
+            font-family: var(--font-mono);
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--accent-green);
+            text-shadow: var(--glow-green);
+        }
+
+        .cta-text {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto 40px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(to right, var(--accent-green), var(--accent-green-dark));
+            color: #000;
+            font-family: var(--font-mono);
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px rgba(0, 255, 65, 0.7);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--bg-secondary);
+            padding: 30px 0;
+            text-align: center;
+            border-top: 1px solid rgba(0, 255, 65, 0.2);
+        }
+
+        .footer-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .footer-text a {
+            color: var(--accent-green);
+            text-decoration: none;
+        }
+
+        .footer-text a:hover {
+            text-decoration: underline;
+        }
+
+        /* Animations */
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .box-types {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .box-type {
+                width: 100%;
+                max-width: 500px;
+            }
+
+            .tools-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .box-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .box-header-icon {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-table {
+                font-size: 0.9rem;
+            }
+
+            .comparison-table th,
+            .comparison-table td {
+                padding: 10px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .logo {
+                font-size: 2rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .intro-section {
+                padding: 20px;
+            }
+
+            .box-content {
+                padding: 20px;
+            }
+
+            .cta-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="matrix-bg"></div>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">0xHACKER<span>_</span></div>
+                <h1>HackBox Academy</h1>
+                <p class="subtitle">Understanding the different approaches to penetration testing and when to use each methodology for maximum effectiveness.</p>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <section class="intro-section">
+                <h2 class="section-title">What Are Testing "Boxes" in Pentesting?</h2>
+                <p class="intro-text">
+                    In the world of penetration testing, the term "box" refers to the level of knowledge and access a tester has about the target system before beginning the assessment. The color of the box (black, gray, or white) indicates how much information is provided to the tester, which significantly impacts the testing approach, methodology, and outcomes.
+                </p>
+                <p class="intro-text">
+                    These different testing methodologies simulate various real-world attack scenarios, from completely external attackers with no inside knowledge to malicious insiders with significant system understanding.
+                </p>
+
+                <div class="box-types">
+                    <div class="box-type black-box">
+                        <div class="box-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <h3 class="box-title">Black Box</h3>
+                        <p class="box-description">
+                            Testing with minimal or no prior knowledge of the target system. Simulates an attack from an external threat actor with no inside information.
+                        </p>
+                    </div>
+
+                    <div class="box-type gray-box">
+                        <div class="box-icon">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <h3 class="box-title">Gray Box</h3>
+                        <p class="box-description">
+                            Testing with partial knowledge of the target system. Simulates an attack from someone with limited access or insider information.
+                        </p>
+                    </div>
+
+                    <div class="box-type white-box">
+                        <div class="box-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h3 class="box-title">White Box</h3>
+                        <p class="box-description">
+                            Testing with complete knowledge of the target system, including architecture, source code, and documentation. Simulates an attack from a malicious insider.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="box-section black-box-section">
+                <div class="box-header">
+                    <div class="box-header-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h2 class="box-header-title">Black Box Testing</h2>
+                </div>
+
+                <div class="box-content">
+                    <p class="content-text">
+                        Black box testing is the most realistic simulation of an external attack. The penetration tester has little to no information about the target system, just like a real-world attacker. They must discover and exploit vulnerabilities using only publicly available information and their own reconnaissance efforts.
+                    </p>
+
+                    <div class="feature-list">
+                        <h3 class="feature-title"><i class="fas fa-fingerprint"></i>Characteristics</h3>
+                        <ul>
+                            <li>Tester has minimal or no prior knowledge of the target</li>
+                            <li>Only public-facing assets and information are known</li>
+                            <li>Requires extensive reconnaissance and enumeration</li>
+                            <li>Most closely simulates a real external attack</li>
+                            <li>Time-consuming but provides realistic attack scenarios</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-list">
+                        <h3 class="feature-title"><i class="fas fa-bullseye"></i>Methodology</h3>
+                        <ul>
+                            <li><strong>Reconnaissance:</strong> Gathering all publicly available information about the target</li>
+                            <li><strong>Scanning:</strong> Identifying live hosts, open ports, and services</li>
+                            <li><strong>Vulnerability Assessment:</strong> Identifying potential security weaknesses</li>
+                            <li><strong>Exploitation:</strong> Attempting to exploit discovered vulnerabilities</li>
+                            <li><strong>Post-Exploitation:</strong> Maintaining access and pivoting to internal systems</li>
+                            <li><strong>Reporting:</strong> Documenting findings and providing remediation recommendations</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-list">
+                        <h3 class="feature-title"><i class="fas fa-plus-circle"></i>Advantages</h3>
+                        <ul>
+                            <li>Provides the most realistic assessment of external security posture</li>
+                            <li>Identifies vulnerabilities that are actually exploitable from the outside</li>
+                            <li>Reveals how much information can be gathered through OSINT</li>
+                            <li>Tests blue team detection and response capabilities</li>
+                            <li>Helps prioritize remediation efforts based on real-world risk</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-list">
+                        <h3 class="feature-title"><i class="fas fa-minus-circle"></i>Limitations</h3>
+                        <ul>
+                            <li>Time-consuming due to extensive reconnaissance requirements</li>
+                            <li>May miss internal vulnerabilities not accessible from outside</li>
+                            <li>Limited scope may not identify all potential security issues</li>
+                            <li>Can be more expensive due to increased time requirements</li>
+                            <li>May not be comprehensive enough for complete security assessment</li>
+                        </ul>
+                    </div>
+
+                    <div class="tools-section">
+                        <h3 class="tools-title">Essential Tools for Black Box Testing</h3>
+                        <div class="tools-grid">
+                            <div class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                                <h4 class="tool-name">Nmap</h4>
+                                <p class="tool-description">Network scanning and service discovery tool used to identify open ports and running services.</p>
+                            </div>
+
+                            <div class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="fas fa-spider"></i>
+                                </div>
+                                <h4 class="tool-name">Burp Suite</h4>
+                                <p class="tool-description">Web application security testing platform for finding vulnerabilities in web applications.</p>
+                            </div>
+
+                            <div class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="fas fa-folder-open"></i>
+                                </div>
+                                <h4 class="tool-name">Gobuster/Dirbuster</h4>
+                                <p class="tool-description">Directory and file brute forcing tools to discover hidden content on web servers.</p>
+                            </div>
+
+                            <div class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="fas fa-bug"></i>
+                                </div>
+                                <h4 class="tool-name">Metasploit Framework</h4>
+                                <p class="tool-description">Exploitation framework with numerous modules for testing security vulnerabilities.</p>
+                            </div>
+
+                            <div class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="fas fa-user-secret"></i>
+                                </div>
+                                <h4 class="tool-name">Maltego</h4>
+                                <p class="tool-description">OSINT and graphical link analysis tool for gathering information about targets.</p>
+                            </div>
+
+                            <div class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="fas fa-globe"></i>
+                                </div>
+                                <h4 class="tool-name">Shodan</h4>
+                                <p class="tool-description">Search engine for internet-connected devices to discover exposed systems and services.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="scenarios-section">
+                        <h3 class="scenarios-title">Example Scenarios</h3>
+                        
+                        <div class="scenario-card">
+                            <h4 class="scenario-title"><i class="fas fa-building"></i>External Corporate Assessment</h4>
+                            <p class="scenario-description">
+                                A company wants to test how secure their systems appear to potential attackers on the internet. The penetration tester is given only the company name and must discover all publicly accessible assets, identify vulnerabilities, and attempt to gain access to internal systems.
+                            </p>
+                        </div>
+
+                        <div class="scenario-card">
+                            <h4 class="scenario-title"><i class="fas fa-shopping-cart"></i>E-commerce Website Testing</h4>
+                            <p class="scenario-description">
+                                An online retailer wants to ensure their customer data is secure. The tester is given only the website URL and must identify vulnerabilities like SQL injection, XSS, CSRF, and other OWASP Top 10 issues that could compromise customer information.
+                            </p>
+                        </div>
+
+                        <div class="scenario-card">
+                            <h4 class="scenario-title"><i class="fas fa-wifi"></i>External Network Penetration Test</h4>
+                            <p class="scenario-description">
+                                An organization wants to test the security of their external network infrastructure. The tester must identify exposed services, misconfigurations, and vulnerabilities in internet-facing systems that could allow unauthorized access.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="box-section gray-box-section">
+                <div class="box-header">
+                    <div class="box-header-icon">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <h2 class="box-header-title">Gray Box Testing</h2>
+                </div>
+
+                <div class="box-content">
+                    <p class="content-text">
+                        Gray box testing represents a middle ground between black box and white box testing. The penetration tester has partial knowledge of the target system, such as network diagrams, user credentials, or application documentation. This approach simulates an attack from someone with limited insider information or from a position where some access has already been gained.
+                    </p>
+
+                    <div class="feature-list">
+                        <h3 class="feature-title"><i class="fas fa-fingerprint"></i>Characteristics</h3>
+                        <ul>
+                            <li>Tester has partial knowledge of the target system</li>
+                            <li>May include network diagrams, user credentials, or system documentation</li>
+                            <li>Balances realism with efficiency</li>
+                            <li>Simulates attacks from insiders or after initial compromise</li>
+                            <li>More focused and efficient than black box testing</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-list">
+                        <h3 class="feature-title"><i class="fas fa-bullseye"></i>Methodology</h3>
+                        <ul>
+                            <li><strong>Information Analysis:</strong> Reviewing provided documentation and credentials</li>
+                            <li><strong>Internal Reconnaissance:</strong> Mapping the network from the provided access point</li>
+                            <li><strong>Vulnerability Assessment:</strong> Identifying security weaknesses with the benefit of insider knowledge</li>
+                            <li><strong>Exploitation:</strong> Leveraging provided access to exploit additional vulnerabilities</li>
+                            <li><strong>Privilege Escalation:</strong> Attempting to gain higher privileges within the system</li>
+                            <li><strong>Lateral Movement:</strong> Moving between systems and expanding access</li>
+                            <li><strong>Reporting:</strong> Documenting findings with context from the insider perspective</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-list">
+                        <h3 class="feature-title"><i class="fas fa-plus-circle"></i>Advantages</h3>
+                        <ul>
+                            <li>More efficient than black box testing due to provided information</li>
+                            <li>Better coverage of internal vulnerabilities</li>
+                            <li>Simulates realistic insider threat scenarios</li>
+                            <li>Balances time constraints with thoroughness</li>
+                            <li>Can identify issues that might be missed in black box testing</li>
+                            <li>Tests security controls beyond the perimeter</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-list">
+                        <h3 class="feature-title"><i class="fas fa-minus-circle"></i>Limitations</h3>
+                        <ul>
+                            <li>Less realistic for pure external attack scenarios</li>
+                            <li>May not fully test initial access controls</li>
+                            <li>Results can be influenced by the specific information provided</li>
+                            <li>May create artificial testing conditions</li>
+                            <li>Requires careful scoping to ensure realistic scenarios</li>
+                        </ul>
+                    </div>
+
+                    <div class="tools-section">
+                        <h3 class="tools-title">Essential Tools for Gray Box Testing</h3>
+                        <div class="tools-grid">
+                            <div class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="fas fa-project-diagram"></i>
+                                </div>
+                                <h4 class="tool-name">Bloodhound</h4>
+                                <p class="tool-description">Active Directory reconnaissance tool that maps relationships and identifies attack paths.</p>
+                            </div>
+
+                            <div class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="fas fa-key"></i>
+                                </div>
+                                <h4 class="tool-name">Mimikatz</h4>
+                                <p class="tool-description">Credential harvesting tool for extracting passwords, hashes, and tickets from memory.</p>
+                            </div>
+
+                            <div class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="fas fa-network-wired"></i>
+                                </div>
+                                <h4 class="tool-name">Responder</h4>
+                                <p class="tool-description">LLMNR, NBT-NS and MDNS poisoner for capturing credentials on internal networks.</p>
+                            </div>
+
+                            <div class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="fas fa-arrow-up"></i>
+                                </div>
+                                <h4 class="tool-name">LinPEAS/WinPEAS</h4>
+                                <p class="tool-description">Privilege escalation tools for Linux and Windows systems to find potential escalation vectors.</p>
+                            </div>
+
+                            <div class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="fas fa-route"></i>
+                                </div>
+                                <h4 class="tool-name">Proxychains</h4>
+                                <p class="tool-description">Tool for pivoting through compromised hosts to access otherwise unreachable systems.</p>
+                            </div>
+
+                            <div class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="fas fa-code"></i>
+                                </div>
+                                <h4 class="tool-name">PowerSploit</h4>
+                                <p class="tool-description">PowerShell post-exploitation framework for various penetration testing tasks.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="scenarios-section">
+                        <h3 class="scenarios-title">Example Scenarios</h3>
+                        
+                        <div class="scenario-card">
+                            <h4 class="scenario-title"><i class="fas fa-users"></i>Authenticated Web Application Testing</h4>
+                            <p class="scenario-description">
+                                A company wants to test the security of their web application from the perspective of an authenticated user. The tester is provided with valid user credentials and documentation about the application's functionality to identify vulnerabilities that could be exploited by a malicious user.
+                            </p>
+                        </div>
+
+                        <div class="scenario-card">
+                            <h4 class="scenario-title"><i class="fas fa-network-wired"></i>Internal Network Assessment</h4>
+                            <p class="scenario-description">
+                                An organization wants to evaluate their internal network security. The tester is given a standard employee workstation with basic network access and must attempt to escalate privileges and access sensitive systems or data.
+                            </p>
+                        </div>
+
+                        <div class="scenario-card">
+                            <h4 class="scenario-title"><i class="fas fa-sitemap"></i>Active Directory Security Assessment</h4>
+                            <p class="scenario-description">
+                                A company wants to test the security of their Active Directory environment. The tester is provided with a standard domain user account and must attempt to identify and exploit misconfigurations to gain domain admin privileges.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="comparison-section">
+                <h2 class="comparison-title">Black Box vs. Gray Box: When to Use Each</h2>
+                
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Factor</th>
+                            <th>Black Box Testing</th>
+                            <th>Gray Box Testing</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Simulated Threat</td>
+                            <td>External attacker with no inside knowledge</td>
+                            <td>Insider threat or attacker who has gained initial access</td>
+                        </tr>
+                        <tr>
+                            <td>Time Efficiency</td>
+                            <td>More time-consuming due to reconnaissance requirements</td>
+                            <td>More efficient due to provided information</td>
+                        </tr>
+                        <tr>
+                            <td>Coverage</td>
+                            <td>Focuses on perimeter security and externally accessible vulnerabilities</td>
+                            <td>Better coverage of internal systems and privilege escalation paths</td>
+                        </tr>
+                        <tr>
+                            <td>Cost</td>
+                            <td>Generally more expensive due to increased time requirements</td>
+                            <td>Usually more cost-effective due to focused testing</td>
+                        </tr>
+                        <tr>
+                            <td>Ideal Use Cases</td>
+                            <td>Testing external security posture, evaluating the effectiveness of perimeter defenses</td>
+                            <td>Testing internal security controls, evaluating privilege escalation risks, insider threat simulation</td>
+                        </tr>
+                        <tr>
+                            <td>Realism</td>
+                            <td>Most realistic for external attack scenarios</td>
+                            <td>Most realistic for insider threats or post-compromise scenarios</td>
+                        </tr>
+                        <tr>
+                            <td>Recommended Frequency</td>
+                            <td>Annually or after significant external infrastructure changes</td>
+                            <td>Bi-annually or after significant internal system changes</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p class="content-text">
+                    The choice between black box and gray box testing depends on your specific security goals, budget constraints, and the threats you're most concerned about. Many organizations benefit from alternating between these methodologies or combining them in a comprehensive security assessment program.
+                </p>
+
+                <p class="content-text">
+                    For the most thorough security evaluation, consider implementing a testing strategy that includes both methodologies at different intervals, providing a more complete picture of your organization's security posture from multiple threat perspectives.
+                </p>
+            </section>
+        </div>
+
+        <div class="cta-section">
+            <div class="cta-bg"></div>
+            <div class="container">
+                <div class="cta-content">
+                    <h2 class="cta-title">Ready to Test Your Security?</h2>
+                    <p class="cta-text">Whether you need a black box assessment to evaluate your external security posture or a gray box test to identify internal vulnerabilities, our expert penetration testers can help secure your systems against real-world threats.</p>
+                    <a href="./login.html" class="cta-button">Schedule Your Pentest</a>
+
+                
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p class="footer-text">© 2025 From 0 to Hero | Ethical Hacking Education | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+        </div>
+    </footer>
+
+    <script>
+        // Matrix code animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const matrixBg = document.querySelector('.matrix-bg');
+            if (matrixBg) {
+                let html = '';
+                for (let i = 0; i < 100; i++) {
+                    const left = Math.floor(Math.random() * 100);
+                    const top = Math.floor(Math.random() * 100);
+                    const size = Math.floor(Math.random() * 24) + 10;
+                    const opacity = Math.random() * 0.5 + 0.1;
+                    const delay = Math.random() * 5;
+                    
+                    html += `<div style="position: absolute; left: ${left}%; top: ${top}%; font-size: ${size}px; opacity: ${opacity}; animation: blink ${delay}s infinite alternate; color: rgba(0, 255, 65, 0.7); font-family: monospace;">1</div>`;
+                }
+                matrixBg.innerHTML = html;
+            }
+        });
+    </script>
+</body>
+</html>

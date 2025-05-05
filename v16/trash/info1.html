@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HackBox Academy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        mono: ['Fira Code', 'monospace'],
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-gray-900 text-gray-100 font-sans">
+    <!-- Navigation -->
+    <nav class="bg-gray-800 border-b border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="4 17 10 11 4 5"></polyline>
+                        <line x1="12" y1="19" x2="20" y2="19"></line>
+                    </svg>
+                    <span class="ml-2 text-xl font-bold font-mono">HackBox Academy</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#hero" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700">Home</a>
+                        <a href="#boxes" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700">Boxes</a>
+                        <a href="#learning-path" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700">Learning Path</a>
+                        <a href="#tools" class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700">Tools</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div id="hero" class="relative overflow-hidden">
+        <div class="max-w-7xl mx-auto">
+            <div class="relative z-10 pb-8 sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
+                <main class="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
+                    <div class="sm:text-center lg:text-left">
+                        <h1 class="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl">
+                            <span class="block">From Zero to Hero in</span>
+                            <span class="block text-emerald-400">Pentesting Boxes</span>
+                        </h1>
+                        <p class="mt-3 text-base text-gray-300 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
+                            Master the art of penetration testing through hands-on practice with vulnerable machines. Learn methodologies, tools, and techniques used by ethical hackers.
+                        </p>
+                        <div class="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
+                            <div class="rounded-md shadow">
+                                <a href="#boxes" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-black bg-emerald-400 hover:bg-emerald-500 md:py-4 md:text-lg md:px-10">
+                                    Start Your Journey
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="9 18 15 12 9 6"></polyline>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <!-- Box Types Section -->
+    <div id="boxes" class="py-12 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-extrabold text-white sm:text-4xl">
+                    Understanding Box Types
+                </h2>
+                <p class="mt-4 text-xl text-gray-300">
+                    Different approaches to penetration testing require different methodologies and access levels
+                </p>
+            </div>
+
+            <div class="mt-10">
+                <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                    <!-- White Box -->
+                    <div class="pt-6">
+                        <div class="flow-root bg-gray-900 rounded-lg px-6 pb-8">
+                            <div class="-mt-6">
+                                <div>
+                                    <span class="inline-flex items-center justify-center p-3 text-blue-400 bg-gray-800 rounded-md shadow-lg">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <h3 class="mt-8 text-lg font-medium text-white tracking-tight">White Box</h3>
+                                <p class="mt-5 text-base text-gray-400">
+                                    Complete access to source code, architecture diagrams, and documentation. Ideal for:
+                                </p>
+                                <ul class="mt-4 space-y-2 text-sm text-gray-400 list-disc list-inside">
+                                    <li>Code review and security audits</li>
+                                    <li>Understanding system internals</li>
+                                    <li>Finding logical vulnerabilities</li>
+                                    <li>Security architecture assessment</li>
+                                </ul>
+                                <div class="mt-4 p-4 bg-gray-800 rounded-lg">
+                                    <p class="text-sm text-gray-300">
+                                        <span class="text-blue-400 font-semibold">Pro Tip:</span> Start with white box testing to learn how systems work and understand common security patterns.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Black Box -->
+                    <div class="pt-6">
+                        <div class="flow-root bg-gray-900 rounded-lg px-6 pb-8">
+                            <div class="-mt-6">
+                                <div>
+                                    <span class="inline-flex items-center justify-center p-3 text-purple-400 bg-gray-800 rounded-md shadow-lg">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <h3 class="mt-8 text-lg font-medium text-white tracking-tight">Black Box</h3>
+                                <p class="mt-5 text-base text-gray-400">
+                                    Zero knowledge testing - simulates real-world external attacks. Focus areas:
+                                </p>
+                                <ul class="mt-4 space-y-2 text-sm text-gray-400 list-disc list-inside">
+                                    <li>Network enumeration</li>
+                                    <li>Service discovery</li>
+                                    <li>Vulnerability scanning</li>
+                                    <li>External attack surface mapping</li>
+                                </ul>
+                                <div class="mt-4 p-4 bg-gray-800 rounded-lg">
+                                    <p class="text-sm text-gray-300">
+                                        <span class="text-purple-400 font-semibold">Challenge:</span> Most realistic scenario - requires strong enumeration skills and methodology.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Grey Box -->
+                    <div class="pt-6">
+                        <div class="flow-root bg-gray-900 rounded-lg px-6 pb-8">
+                            <div class="-mt-6">
+                                <div>
+                                    <span class="inline-flex items-center justify-center p-3 text-gray-400 bg-gray-800 rounded-md shadow-lg">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <circle cx="12" cy="12" r="6"></circle>
+                                            <circle cx="12" cy="12" r="2"></circle>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <h3 class="mt-8 text-lg font-medium text-white tracking-tight">Grey Box</h3>
+                                <p class="mt-5 text-base text-gray-400">
+                                    Partial information provided - balanced approach. You might receive:
+                                </p>
+                                <ul class="mt-4 space-y-2 text-sm text-gray-400 list-disc list-inside">
+                                    <li>Network diagrams</li>
+                                    <li>User credentials</li>
+                                    <li>Application documentation</li>
+                                    <li>Limited code access</li>
+                                </ul>
+                                <div class="mt-4 p-4 bg-gray-800 rounded-lg">
+                                    <p class="text-sm text-gray-300">
+                                        <span class="text-gray-400 font-semibold">Best Practice:</span> Perfect balance between learning and realistic challenges.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Box Testing Info -->
+            <div class="mt-12 bg-gray-900 rounded-lg p-6">
+                <h3 class="text-xl font-semibold text-emerald-400 mb-4">Choosing the Right Approach</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="text-lg font-medium text-white mb-2">When to Use Each Type:</h4>
+                        <ul class="space-y-2 text-gray-300">
+                            <li>🔍 <span class="text-blue-400">White Box</span> - Security audits, code review</li>
+                            <li>🛡️ <span class="text-purple-400">Black Box</span> - External security assessment</li>
+                            <li>⚖️ <span class="text-gray-400">Grey Box</span> - Internal security testing</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-medium text-white mb-2">Common Tools Per Type:</h4>
+                        <ul class="space-y-2 text-gray-300">
+                            <li>📝 <span class="text-blue-400">White Box</span> - SAST tools, code analyzers</li>
+                            <li>🔨 <span class="text-purple-400">Black Box</span> - Nmap, Burp Suite</li>
+                            <li>🛠️ <span class="text-gray-400">Grey Box</span> - Combination of both</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Learning Path Section -->
+    <div id="learning-path" class="py-12 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-extrabold text-white sm:text-4xl">
+                    Your Path to Mastery
+                </h2>
+                <p class="mt-4 text-xl text-gray-300">
+                    Follow our structured learning path to become an elite penetration tester
+                </p>
+            </div>
+
+            <div class="mt-10">
+                <div class="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
+                    <!-- Newbie -->
+                    <div class="relative">
+                        <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-gray-800 text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-16">
+                            <h3 class="text-lg font-medium text-green-400">Newbie</h3>
+                            <p class="mt-2 text-base text-gray-400">Learn the basics of penetration testing and essential tools</p>
+                        </div>
+                    </div>
+
+                    <!-- Script Kiddie -->
+                    <div class="relative">
+                        <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-gray-800 text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-16">
+                            <h3 class="text-lg font-medium text-blue-400">Script Kiddie</h3>
+                            <p class="mt-2 text-base text-gray-400">Master common tools and basic exploitation techniques</p>
+                        </div>
+                    </div>
+
+                    <!-- Intermediate Hacker -->
+                    <div class="relative">
+                        <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-gray-800 text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path>
+                                <path d="M22 12A10 10 0 0 0 12 2v10z"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-16">
+                            <h3 class="text-lg font-medium text-yellow-400">Intermediate Hacker</h3>
+                            <p class="mt-2 text-base text-gray-400">Advanced exploitation and custom script development</p>
+                        </div>
+                    </div>
+
+                    <!-- Elite Hacker -->
+                    <div class="relative">
+                        <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-gray-800 text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                                <rect x="9" y="9" width="6" height="6"></rect>
+                                <line x1="9" y1="1" x2="9" y2="4"></line>
+                                <line x1="15" y1="1" x2="15" y2="4"></line>
+                                <line x1="9" y1="20" x2="9" y2="23"></line>
+                                <line x1="15" y1="20" x2="15" y2="23"></line>
+                                <line x1="20" y1="9" x2="23" y2="9"></line>
+                                <line x1="20" y1="14" x2="23" y2="14"></line>
+                                <line x1="1" y1="9" x2="4" y2="9"></line>
+                                <line x1="1" y1="14" x2="4" y2="14"></line>
+                            </svg>
+                        </div>
+                        <div class="ml-16">
+                            <h3 class="text-lg font-medium text-red-400">Elite Hacker</h3>
+                            <p class="mt-2 text-base text-gray-400">Complex vulnerabilities and advanced persistence techniques</p>
+                        </div>
+                    </div>
+
+                    <!-- Legendary -->
+                    <div class="relative">
+                        <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-gray-800 text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="8" r="7"></circle>
+                                <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+                            </svg>
+                        </div>
+                        <div class="ml-16">
+                            <h3 class="text-lg font-medium text-purple-400">Legendary</h3>
+                            <p class="mt-2 text-base text-gray-400">Master of all domains - 0x1337 status achieved</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tools Section -->
+    <div id="tools" class="py-12 bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-extrabold text-white sm:text-4xl">
+                    Essential Tools
+                </h2>
+                <p class="mt-4 text-xl text-gray-300">
+                    Master the tools of the trade
+                </p>
+            </div>
+
+            <div class="mt-10">
+                <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+                    <!-- Nmap -->
+                    <div class="pt-6">
+                        <div class="flow-root bg-gray-900 rounded-lg px-6 pb-8">
+                            <div class="-mt-6">
+                                <div>
+                                    <span class="inline-flex items-center justify-center p-3 text-emerald-400 bg-gray-800 rounded-md shadow-lg">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <circle cx="11" cy="11" r="8"></circle>
+                                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <h3 class="mt-8 text-lg font-medium text-white tracking-tight">Nmap</h3>
+                                <p class="mt-5 text-base text-gray-400">
+                                    Network discovery and security scanning
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Metasploit -->
+                    <div class="pt-6">
+                        <div class="flow-root bg-gray-900 rounded-lg px-6 pb-8">
+                            <div class="-mt-6">
+                                <div>
+                                    <span class="inline-flex items-center justify-center p-3 text-emerald-400 bg-gray-800 rounded-md shadow-lg">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="4 17 10 11 4 5"></polyline>
+                                            <line x1="12" y1="19" x2="20" y2="19"></line>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <h3 class="mt-8 text-lg font-medium text-white tracking-tight">Metasploit</h3>
+                                <p class="mt-5 text-base text-gray-400">
+                                    Penetration testing framework
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- John the Ripper -->
+                    <div class="pt-6">
+                        <div class="flow-root bg-gray-900 rounded-lg px-6 pb-8">
+                            <div class="-mt-6">
+                                <div>
+                                    <span class="inline-flex items-center justify-center p-3 text-emerald-400 bg-gray-800 rounded-md shadow-lg">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <h3 class="mt-8 text-lg font-medium text-white tracking-tight">John the Ripper</h3>
+                                <p class="mt-5 text-base text-gray-400">
+                                    Password cracking tool
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Burp Suite -->
+                    <div class="pt-6">
+                        <div class="flow-root bg-gray-900 rounded-lg px-6 pb-8">
+                            <div class="-mt-6">
+                                <div>
+                                    <span class="inline-flex items-center justify-center p-3 text-emerald-400 bg-gray-800 rounded-md shadow-lg">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <h3 class="mt-8 text-lg font-medium text-white tracking-tight">Burp Suite</h3>
+                                <p class="mt-5 text-base text-gray-400">
+                                    Web vulnerability scanner
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SQLMap -->
+                    <div class="pt-6">
+                        <div class="flow-root bg-gray-900 rounded-lg px-6 pb-8">
+                            <div class="-mt-6">
+                                <div>
+                                    <span class="inline-flex items-center justify-center p-3 text-emerald-400 bg-gray-800 rounded-md shadow-lg">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                                            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                                            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <h3 class="mt-8 text-lg font-medium text-white tracking-tight">SQLMap</h3>
+                                <p class="mt-5 text-base text-gray-400">
+                                    SQL injection and database takeover tool
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hydra -->
+                    <div class="pt-6">
+                        <div class="flow-root bg-gray-900 rounded-lg px-6 pb-8">
+                            <div class="-mt-6">
+                                <div>
+                                    <span class="inline-flex items-center justify-center p-3 text-emerald-400 bg-gray-800 rounded-md shadow-lg">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <h3 class="mt-8 text-lg font-medium text-white tracking-tight">Hydra</h3>
+                                <p class="mt-5 text-base text-gray-400">
+                                    Login cracker for various protocols
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</body>
+</html>
