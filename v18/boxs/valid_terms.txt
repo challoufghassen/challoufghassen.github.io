@@ -1,0 +1,14 @@
+Information Gathering: nmap, whois, dnsenum, netcat, traceroute, dig, theharvester, shodan, maltego, recon-ng
+Static Code Analysis: php: version, python: version, checkmarx, sonarqube, fortify, flawfinder, eslint, bandit, semgrep, codacy
+Dynamic Analysis: burp suite, zap, nikto, w3af, arachni, sqlmap, dirb, gobuster, wpscan, fiddler
+Privilege Escalation Testing: sudo, kernel exploit, suid, cronjob, dirtycow, shadow, passwd, privesc, linpeas, winpeas
+Exploit Development: metasploit, buffer overflow, shellcode, rop, exploitdb, gdb, pwndbg, radare2, ida pro, ghidra
+Manual Code Review: grep, findstr, regex, codereview, audit, staticcheck, sonarlint, pmd, cwe, owasp
+Test for Security Vulnerabilities (SQLi, XSS, CSRF, etc.): sqlmap, xss, csrf, ssrf, lfi, rfi, xxe, nosql, command injection, deserialization
+Access Control Testing: rbac, abac, acl, oauth2, rolecheck, privilege, access, authorization, bypass, token
+Authentication and Session Management Testing: oauth, jwt, saml, session fixation, brute force, password spray, credential stuffing, mfa, otp, login
+Privilege and Role Management Testing: admin, user escalation, role escalation, sudoers, group policy, ad audit, rbac, privilege creep, permission, access control
+Fuzz Testing: fuzz, ffuf, afl, boofuzz, radamsa, peach, sulley, spike, honggfuzz, libfuzzer
+Security Misconfiguration Testing: misconfig, check, default creds, open port, debug mode, directory listing, cors, tls, ssl, hardening
+Code Coverage and Unit Testing: coverage, unittest, pytest, jmeter, jacoco, codecov, sonar, nunit, mock, assert
+Exploitation & Reporting: report, exploit, cvss, cve, vuln report, poc, remediation, executive summary, mitigation, documentation
