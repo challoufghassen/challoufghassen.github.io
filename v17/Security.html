@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Operative Profile - Security</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Courier New', monospace;
+    }
+
+    body {
+        background-color: #0a0a0a;
+        color: #00ff00;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow-x: hidden;
+    }
+
+    /* Matrix Rain Animation */
+    .matrix-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        opacity: 0.3;
+    }
+
+    /* Hexagon Grid Background */
+    .hex-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: 
+            linear-gradient(90deg, #0a0a0a 21px, transparent 1%) center,
+            linear-gradient(#0a0a0a 21px, transparent 1%) center,
+            #00ff00;
+        background-size: 22px 22px;
+        opacity: 0.05;
+        z-index: 1;
+    }
+
+    /* Scan line effect */
+    .scan-line {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: rgba(0, 255, 0, 0.5);
+        z-index: 3;
+        animation: scanline 8s linear infinite;
+        opacity: 0.7;
+        pointer-events: none;
+    }
+
+    @keyframes scanline {
+        0% {
+            top: 0%;
+        }
+        100% {
+            top: 100%;
+        }
+    }
+
+    /* Layout */
+    .dashboard {
+        display: flex;
+        min-height: 100vh;
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Sidebar */
+    .sidebar {
+        width: 250px;
+        background: rgba(0, 20, 0, 0.7);
+        border-right: 1px solid rgba(0, 255, 0, 0.3);
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .logo {
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 1.5em;
+        text-shadow: 0 0 10px #00ff00;
+        padding-bottom: 15px;
+        border-bottom: 1px solid rgba(0, 255, 0, 0.3);
+    }
+
+    .user-profile {
+        display: flex;
+        align-items: center;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid rgba(0, 255, 0, 0.3);
+    }
+
+    .user-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 5px;
+        margin-right: 15px;
+        border: 1px solid #00ff00;
+    }
+
+    .user-info {
+        flex: 1;
+    }
+
+    .user-name {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .user-status {
+        font-size: 0.8em;
+        color: #00aa00;
+    }
+
+    .nav-menu {
+        flex: 1;
+    }
+
+    .nav-item {
+        margin-bottom: 10px;
+    }
+
+    .nav-link {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        text-decoration: none;
+        color: #00ff00;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+    }
+
+    .nav-link:hover, .nav-link.active {
+        background: rgba(0, 255, 0, 0.1);
+        box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
+    }
+
+    .nav-icon {
+        margin-right: 10px;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .logout {
+        margin-top: auto;
+        padding-top: 15px;
+        border-top: 1px solid rgba(0, 255, 0, 0.3);
+    }
+
+    /* Main Content */
+    .main-content {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid rgba(0, 255, 0, 0.3);
+    }
+
+    .page-title {
+        font-size: 1.8em;
+        text-shadow: 0 0 5px #00ff00;
+    }
+
+    .system-status {
+        display: flex;
+        align-items: center;
+    }
+
+    .status-indicator {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #00ff00;
+        margin-right: 10px;
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0.5;
+        }
+    }
+
+    /* Profile Content */
+    .profile-section {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
+    .profile-card {
+        background: rgba(0, 20, 0, 0.5);
+        border: 1px solid #00ff00;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 0 15px rgba(0, 255, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .profile-image-container {
+        width: 150px;
+        height: 150px;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 20px;
+        border: 2px solid #00ff00;
+        position: relative;
+    }
+
+    .profile-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .profile-image-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, rgba(0, 255, 0, 0.1), rgba(0, 0, 0, 0.3));
+    }
+
+    .change-photo {
+        display: block;
+        text-align: center;
+        text-decoration: none;
+        color: #00ff00;
+        margin-top: 10px;
+        padding: 5px 15px;
+        border: 1px solid #00ff00;
+        border-radius: 5px;
+        background: rgba(0, 255, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .change-photo:hover {
+        background: rgba(0, 255, 0, 0.2);
+    }
+
+    .profile-details {
+        background: rgba(0, 20, 0, 0.5);
+        border: 1px solid #00ff00;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 0 15px rgba(0, 255, 0, 0.1);
+    }
+
+    .details-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba(0, 255, 0, 0.3);
+    }
+
+    .details-title {
+        font-size: 1.4em;
+        font-weight: bold;
+    }
+
+    .security-level {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .level-indicator {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: #00ff00;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 8px;
+        color: #00aa00;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 10px;
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid #00ff00;
+        border-radius: 5px;
+        color: #00ff00;
+        font-family: 'Courier New', monospace;
+    }
+
+    .form-input:focus {
+        outline: none;
+        box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+    }
+
+    .form-button {
+        padding: 10px 20px;
+        background: rgba(0, 255, 0, 0.2);
+        border: 1px solid #00ff00;
+        color: #00ff00;
+        border-radius: 5px;
+        cursor: pointer;
+        font-family: 'Courier New', monospace;
+        transition: all 0.3s ease;
+    }
+
+    .form-button:hover {
+        background: rgba(0, 255, 0, 0.3);
+    }
+
+    .security-features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-top: 30px;
+    }
+
+    .security-card {
+        background: rgba(0, 20, 0, 0.5);
+        border: 1px solid #00ff00;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 0 15px rgba(0, 255, 0, 0.1);
+    }
+
+    .security-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba(0, 255, 0, 0.3);
+    }
+
+    .security-title {
+        font-size: 1.2em;
+        font-weight: bold;
+    }
+
+    .security-icon {
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 255, 0, 0.1);
+        border-radius: 5px;
+    }
+
+    .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 30px;
+    }
+
+    .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .toggle-slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(0, 255, 0, 0.3);
+        transition: .4s;
+        border-radius: 30px;
+    }
+
+    .toggle-slider:before {
+        position: absolute;
+        content: "";
+        height: 22px;
+        width: 22px;
+        left: 4px;
+        bottom: 3px;
+        background-color: #00aa00;
+        transition: .4s;
+        border-radius: 50%;
+    }
+
+    input:checked + .toggle-slider {
+        background-color: rgba(0, 255, 0, 0.2);
+    }
+
+    input:checked + .toggle-slider:before {
+        transform: translateX(30px);
+        background-color: #00ff00;
+    }
+
+    .security-status {
+        margin-top: 10px;
+        font-size: 0.9em;
+        color: #00aa00;
+    }
+
+    .footer {
+        text-align: center;
+        padding: 20px;
+        font-size: 0.8em;
+        color: #00aa00;
+        border-top: 1px solid rgba(0, 255, 0, 0.3);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .dashboard {
+            flex-direction: column;
+        }
+
+        .sidebar {
+            width: 100%;
+            border-right: none;
+            border-bottom: 1px solid rgba(0, 255, 0, 0.3);
+        }
+
+        .profile-section {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+</head>
+<body>
+<div class="matrix-bg"></div>
+<div class="hex-bg"></div>
+<div class="scan-line"></div>
+
+<div class="dashboard">
+    <div class="sidebar">
+        <div class="logo">PENTEST HQ</div>
+        <div class="user-profile">
+            <img id="userAvatar" class="user-avatar" src="/placeholder.svg?height=50&width=50" alt="User Avatar">
+            <div class="user-info">
+                <div id="userName" class="user-name">OPERATIVE</div>
+                <div class="user-status">ACTIVE</div>
+            </div>
+        </div>
+        <nav class="nav-menu">
+            <div class="nav-item">
+                <a href="dashboard.html" class="nav-link">
+                    <div class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                    </div>
+                    Dashboard
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="Security.html" class="nav-link active">
+                    <div class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                    </div>
+                    Security
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="activity.html" class="nav-link">
+                    <div class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                        </svg>
+                    </div>
+                    Activity
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="exploits.html" class="nav-link">
+                    <div class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                        </svg>
+                    </div>
+                    Exploits
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="settings.html" class="nav-link">
+                    <div class="nav-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                        </svg>
+                    </div>
+                    Settings
+                </a>
+            </div>
+        </nav>
+        <div class="logout">
+            <a href="login.html" class="nav-link">
+                <div class="nav-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                </div>
+                Logout
+            </a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <h1 class="page-title">OPERATIVE SECURITY</h1>
+            <div class="system-status">
+                <div class="status-indicator"></div>
+                <span>SECURITY PROTOCOLS ACTIVE</span>
+            </div>
+        </div>
+
+        <div class="profile-section">
+            <div class="profile-card">
+                <div class="profile-image-container">
+                    <img id="profileImage" class="profile-image" src="/placeholder.svg?height=50&width=50" alt="Profile Image">
+                    <div class="profile-image-overlay"></div>
+                </div>
+                <h2 id="profileName">OPERATIVE</h2>
+                <p id="profileRole">Specialization: Network Infiltration</p>
+                <a href="#" class="change-photo">CHANGE PHOTO</a>
+            </div>
+
+            <div class="profile-details">
+                <div class="details-header">
+                    <h2 class="details-title">IDENTITY VERIFICATION</h2>
+                    <div class="security-level">
+                        <div class="level-indicator"></div>
+                        <span>LEVEL A</span>
+                    </div>
+                </div>
+
+                <form>
+                    <div class="form-group">
+                        <label class="form-label">OPERATIVE CODE NAME</label>
+                        <input type="text" class="form-input" id="operativeCodename" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">CURRENT ACCESS CODE</label>
+                        <input type="password" class="form-input" placeholder="••••••••">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">NEW ACCESS CODE</label>
+                        <input type="password" class="form-input" placeholder="Enter new access code">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">CONFIRM NEW ACCESS CODE</label>
+                        <input type="password" class="form-input" placeholder="Confirm new access code">
+                    </div>
+                    <button type="button" class="form-button">UPDATE ACCESS CODE</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="security-features">
+            <div class="security-card">
+                <div class="security-card-header">
+                    <div class="security-title">2FA PROTECTION</div>
+                    <div class="security-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                    </div>
+                </div>
+                <p>Enhanced login security with two-factor authentication</p>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <span>ENABLED</span>
+                </div>
+                <div class="security-status">Last verified: 2025-03-04</div>
+            </div>
+
+            <div class="security-card">
+                <div class="security-card-header">
+                    <div class="security-title">ENCRYPTED COMMS</div>
+                    <div class="security-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                    </div>
+                </div>
+                <p>End-to-end encryption for all communications</p>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <span>ENABLED</span>
+                </div>
+                <div class="security-status">Protocol: AES-256</div>
+            </div>
+
+            <div class="security-card">
+                <div class="security-card-header">
+                    <div class="security-title">IP MASKING</div>
+                    <div class="security-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                            <line x1="2" y1="10" x2="22" y2="10"></line>
+                        </svg>
+                    </div>
+                </div>
+                <p>Hide your true IP address with advanced routing</p>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <span>ENABLED</span>
+                </div>
+                <div class="security-status">Current routing: TOR Network</div>
+            </div>
+        </div>
+
+        <div class="footer">
+            PENTEST HQ SECURITY MODULE v3.5 | LAST UPDATE: 2025-03-04 | SYSTEM ID: 7A3B9C2D1E
+        </div>
+    </div>
+</div>
+
+<script>
+    // Load user data
+    document.addEventListener('DOMContentLoaded', function() {
+        const userData = JSON.parse(localStorage.getItem('currentUser')) || {
+            id: '1',
+            name: 'GHOST',
+            avatar: '/placeholder.svg?height=50&width=50'
+        };
+
+        // Set user info
+        document.getElementById('userName').textContent = userData.name;
+        document.getElementById('userAvatar').src = userData.avatar;
+        document.getElementById('profileName').textContent = userData.name;
+        document.getElementById('profileImage').src = userData.avatar;
+        document.getElementById('operativeCodename').value = userData.name;
+
+        // Set specialization based on user profile
+        const specializations = {
+            '1': 'Network Infiltration',
+            '2': 'Cryptography',
+            '3': 'Malware Development',
+            '4': 'Social Engineering'
+        };
+        
+        document.getElementById('profileRole').textContent = 'Specialization: ' + (specializations[userData.id] || 'Network Infiltration');
+
+        // Handle profile picture change
+        const changePhotoLink = document.querySelector('.change-photo');
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = 'image/*';
+        fileInput.style.display = 'none';
+        document.body.appendChild(fileInput);
+
+        changePhotoLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const newAvatar = e.target.result;
+                    // Update all profile images
+                    document.getElementById('profileImage').src = newAvatar;
+                    document.getElementById('userAvatar').src = newAvatar;
+                    
+                    // Update localStorage
+                    const userData = JSON.parse(localStorage.getItem('currentUser'));
+                    userData.avatar = newAvatar;
+                    localStorage.setItem('currentUser', JSON.stringify(userData));
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Handle password update
+        const updateButton = document.querySelector('.form-button');
+        const currentPassword = document.querySelector('input[placeholder="••••••••"]');
+        const newPassword = document.querySelector('input[placeholder="Enter new access code"]');
+        const confirmPassword = document.querySelector('input[placeholder="Confirm new access code"]');
+
+        updateButton.addEventListener('click', () => {
+            const userData = JSON.parse(localStorage.getItem('currentUser'));
+            const profilePasswords = {
+                '1': 'ghost123',
+                '2': 'cipher456',
+                '3': 'viper789',
+                '4': 'phantom000'
+            };
+
+            if (currentPassword.value !== profilePasswords[userData.id]) {
+                alert('Current password is incorrect');
+                return;
+            }
+
+            if (newPassword.value !== confirmPassword.value) {
+                alert('New passwords do not match');
+                return;
+            }
+
+            if (newPassword.value.length < 6) {
+                alert('Password must be at least 6 characters long');
+                return;
+            }
+
+            // Update password in localStorage
+            profilePasswords[userData.id] = newPassword.value;
+            alert('Password updated successfully');
+            
+            // Clear password fields
+            currentPassword.value = '';
+            newPassword.value = '';
+            confirmPassword.value = '';
+        });
+
+        // Handle username change
+        const operativeCodename = document.getElementById('operativeCodename');
+        operativeCodename.addEventListener('change', () => {
+            const newName = operativeCodename.value.trim();
+            if (newName) {
+                // Update all name displays
+                document.getElementById('userName').textContent = newName;
+                document.getElementById('profileName').textContent = newName;
+                
+                // Update localStorage
+                const userData = JSON.parse(localStorage.getItem('currentUser'));
+                userData.name = newName;
+                localStorage.setItem('currentUser', JSON.stringify(userData));
+            }
+        });
+    });
+
+    // Matrix Rain Animation
+    const canvas = document.createElement('canvas');
+    canvas.classList.add('matrix-bg');
+    document.body.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+
+    // Set canvas size
+    function setCanvasSize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    setCanvasSize();
+    window.addEventListener('resize', setCanvasSize);
+
+    // Matrix rain characters
+    const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+    const charArray = chars.split('');
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+    const drops = Array(Math.floor(columns)).fill(1);
+
+    function draw() {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = '#0f0';
+        ctx.font = fontSize + 'px monospace';
+
+        for (let i = 0; i < drops.length; i++) {
+            const text = charArray[Math.floor(Math.random() * charArray.length)];
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                drops[i] = 0;
+            }
+            drops[i]++;
+        }
+    }
+
+    setInterval(draw, 33);
+</script>
+</body>
+</html>
+
