@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GRAY_BOX Terminal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #000;
+      color: #0f0;
+      font-family: 'Source Code Pro', monospace;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .min-h-screen {
+      display: flex;
+      height: 100vh;
+      background: url('matrix-bg.gif') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    .menu {
+      overflow-y: auto;
+      width: 250px;
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 20px;
+      border-right: 2px solid #0f0;
+    }
+
+    .menu::-webkit-scrollbar {
+      display: none; 
+    }
+    .menu-header {
+      color: #0f0;
+      font-size: 1.2em;
+      margin-bottom: 20px;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .category-button, .back-button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      background-color: #111;
+      color: #0f0;
+      border: 1px solid #0f0;
+      font-family: 'Source Code Pro', monospace;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .category-button:hover, .back-button:hover {
+      background-color: #0f0;
+      color: #000;
+    }
+
+    .terminal-window {
+      flex: 1;
+      background-color: rgba(0, 0, 0, 0.8);
+      margin: 20px;
+      border: 2px solid #0f0;
+      box-shadow: 0 0 10px #0f0;
+    }
+
+    .terminal-header {
+      padding: 10px;
+      background-color: #111;
+      border-bottom: 2px solid #0f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .terminal-title {
+      color: #0f0;
+      font-size: 1.2em;
+    }
+
+    .terminal-controls button {
+      background: none;
+      border: none;
+      color: #0f0;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+
+    .terminal-content {
+      padding: 20px;
+      height: calc(100% - 60px);
+      overflow-y: auto;
+    }
+
+    .input-field {
+      width: 100%;
+      height: 100px;
+      background-color: #111;
+      color: #0f0;
+      border: 1px solid #0f0;
+      padding: 10px;
+      font-family: 'Source Code Pro', monospace;
+      resize: none;
+    }
+
+    .valid-button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #0f0;
+      color: #000;
+      border: none;
+      cursor: pointer;
+      font-family: 'Source Code Pro', monospace;
+      transition: background-color 0.3s;
+    }
+
+    .valid-button:hover {
+      background-color: #0c0;
+    }
+
+    @keyframes blink {
+      0% { opacity: 1; }
+      50% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 10px;
+      height: 20px;
+      background-color: #0f0;
+      animation: blink 1s infinite;
+    }
+  </style>
+</head>
+<body>
+  <div class="min-h-screen">
+    <div class="menu">
+      <button class="back-button" onclick="window.location.href='../boxs.html'">Back to Dashboard</button>
+      <div class="menu-header">Penetration Testing Categories</div>
+      <button class="category-button" onclick="showCategory('information-gathering')">Information Gathering</button>
+      <button class="category-button" onclick="showCategory('access-control')">Access Control Testing</button>
+      <button class="category-button" onclick="showCategory('vulnerability-scanning')">Vulnerability Scanning</button>
+      <button class="category-button" onclick="showCategory('static-code-analysis')">Static Code Analysis</button>
+      <button class="category-button" onclick="showCategory('dynamic-analysis')">Dynamic Analysis</button>
+      <button class="category-button" onclick="showCategory('network-system-mapping')">Network and System Mapping</button>
+      <button class="category-button" onclick="showCategory('authentication-session')">Authentication and Session Management Testing</button>
+      <button class="category-button" onclick="showCategory('api-security')">API Security Testing</button>
+      <button class="category-button" onclick="showCategory('privilege-escalation')">Privilege Escalation</button>
+      <button class="category-button" onclick="showCategory('exploitation')">Exploitation</button>
+      <button class="category-button" onclick="showCategory('social-engineering')">Social Engineering (if applicable)</button>
+      <button class="category-button" onclick="showCategory('input-validation')">Input Validation Testing</button>
+      <button class="category-button" onclick="showCategory('error-handling-logging')">Error Handling and Logging Testing</button>
+      <button class="category-button" onclick="showCategory('fuzz-testing')">Fuzz Testing</button>
+      <button class="category-button" onclick="showCategory('post-exploitation')">Post-Exploitation</button>
+      <button class="category-button" onclick="showCategory('denial-of-service')">Denial of Service Testing</button>
+      <button class="category-button" onclick="showCategory('privilege-role')">Privilege and Role Testing</button>
+      <button class="category-button" onclick="showCategory('code-review')">Code Review (if access to parts of the code is available)</button>
+      <button class="category-button" onclick="showCategory('database-testing')">Database Testing</button>
+      <button class="category-button" onclick="showCategory('reporting')">Reporting</button>
+    </div>
+
+    <div class="terminal-window">
+      <div class="terminal-header">
+        <div class="flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+            <polyline points="4 17 10 11 4 5"></polyline>
+            <line x1="12" y1="19" x2="20" y2="19"></line>
+          </svg>
+          <div class="terminal-title">GRAY_BOX TERMINAL v1.0</div>
+        </div>
+        <div class="terminal-controls">
+          <button><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
+          <button><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg></button>
+          <button><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+        </div>
+      </div>
+
+      <div class="terminal-content" id="terminal-content">
+        <!-- Initial content: Hello World -->
+        <div>
+          <p>🌗 <strong>Gray Box Testing (Partial Access)</strong><br>
+            🔹 <strong>Pentester Knowledge:</strong> ⚠️ Limited knowledge, like user credentials or API docs.<br>
+            🔹 <strong>Approach:</strong> Simulates an insider threat or an attacker with limited access.<br>
+            🔹 <strong>Methods:</strong> Recon + authenticated testing, lateral movement, privilege escalation.<br>
+            🔹 <strong>Challenges:</strong> Balances depth and realism, but might miss certain blind spots.<br>
+            🔹 <strong>Tools:</strong> Burp Suite, SQLmap, BloodHound, Responder.<br>
+            💡 <strong>Best For:</strong> Testing authenticated attacks, API security, and privilege escalation.<br>
+            🖤 🔐 👁️‍🗨️ 👨‍💼
+            </p>
+            <button class="valid-button">Valid</button>
+        </div>
+      </div>
+
+<script>
+  function showCategory(category) {
+    const content = {
+      // Gray box categories
+    };
+
+    document.getElementById('terminal-content').innerHTML = `
+      <div>
+        <textarea class="input-field" placeholder="${content[category]}"></textarea>
+        <button class="valid-button">Valid</button>
+        <button class="back-to-hello" onclick="showHelloWorld()">Back to Hello World</button>
+        <span class="cursor"></span>
+      </div>
+    `;
+  }
+
+  function showHelloWorld() {
+    document.getElementById('terminal-content').innerHTML = `
+      <div>
+        <p>🌗 <strong>Gray Box Testing (Partial Access)</strong><br>
+            🔹 <strong>Pentester Knowledge:</strong> ⚠️ Limited knowledge, like user credentials or API docs.<br>
+            🔹 <strong>Approach:</strong> Simulates an insider threat or an attacker with limited access.<br>
+            🔹 <strong>Methods:</strong> Recon + authenticated testing, lateral movement, privilege escalation.<br>
+            🔹 <strong>Challenges:</strong> Balances depth and realism, but might miss certain blind spots.<br>
+            🔹 <strong>Tools:</strong> Burp Suite, SQLmap, BloodHound, Responder.<br>
+            💡 <strong>Best For:</strong> Testing authenticated attacks, API security, and privilege escalation.<br>
+            🖤 🔐 👁️‍🗨️ 👨‍💼
+            </p>
+            <button class="valid-button">Valid</button>
+      </div>
+    `;
+  }
+</script>
+
+  <script>
+    function showCategory(category) {
+      const content = {
+        "information-gathering": "You selected Information Gathering. Type your command below...",
+        "access-control": "You selected Access Control Testing. Type your command below...",
+        "vulnerability-scanning": "You selected Vulnerability Scanning. Type your command below...",
+        "static-code-analysis": "You selected Static Code Analysis. Type your command below...",
+        "dynamic-analysis": "You selected Dynamic Analysis. Type your command below...",
+        "network-system-mapping": "You selected Network and System Mapping. Type your command below...",
+        "authentication-session": "You selected Authentication and Session Management Testing. Type your command below...",
+        "api-security": "You selected API Security Testing. Type your command below...",
+        "privilege-escalation": "You selected Privilege Escalation. Type your command below...",
+        "exploitation": "You selected Exploitation. Type your command below...",
+        "social-engineering": "You selected Social Engineering (if applicable). Type your command below...",
+        "input-validation": "You selected Input Validation Testing. Type your command below...",
+        "error-handling-logging": "You selected Error Handling and Logging Testing. Type your command below...",
+        "fuzz-testing": "You selected Fuzz Testing. Type your command below...",
+        "post-exploitation": "You selected Post-Exploitation. Type your command below...",
+        "denial-of-service": "You selected Denial of Service Testing. Type your command below...",
+        "privilege-role": "You selected Privilege and Role Testing. Type your command below...",
+        "code-review": "You selected Code Review (if access to parts of the code is available). Type your command below...",
+        "database-testing": "You selected Database Testing. Type your command below...",
+        "reporting": "You selected Reporting. Type your command below..."
+      };
+
+      document.getElementById('terminal-content').innerHTML = `
+      <div>
+        <textarea class="input-field" placeholder="${content[category]}"></textarea>
+        <button class="valid-button">Valid</button>
+        <button class="valid-button" onclick="showHelloWorld()">Back</button>
+        <span class="cursor"></span>
+      </div>
+    `;
+  }
+
+
+  function showHelloWorld() {
+    document.getElementById('terminal-content').innerHTML = `
+      <div>
+        <p>🌗 <strong>Gray Box Testing (Partial Access)</strong><br>
+            🔹 <strong>Pentester Knowledge:</strong> ⚠️ Limited knowledge, like user credentials or API docs.<br>
+            🔹 <strong>Approach:</strong> Simulates an insider threat or an attacker with limited access.<br>
+            🔹 <strong>Methods:</strong> Recon + authenticated testing, lateral movement, privilege escalation.<br>
+            🔹 <strong>Challenges:</strong> Balances depth and realism, but might miss certain blind spots.<br>
+            🔹 <strong>Tools:</strong> Burp Suite, SQLmap, BloodHound, Responder.<br>
+            💡 <strong>Best For:</strong> Testing authenticated attacks, API security, and privilege escalation.<br>
+            🖤 🔐 👁️‍🗨️ 👨‍💼
+            </p>
+            <button class="valid-button">Valid</button>
+      </div>
+    `;
+  }
+  </script>
+</body>
+</html>
