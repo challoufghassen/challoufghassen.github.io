@@ -1,8 +1,12 @@
-# Pickle Rick - TryHackMe Writeup
 
-**Categories**: Web, Easy  
-**Tags**: web, easy, nmap, dirsearch, netcat  
-**Image**: images/Pickle Rick/Pickle Rick.png
+---
+title:Pickle Rick
+categories: [Web, Easy ]
+tags: [web, easy, nmap, dirsearch, netcat]
+image: images/Pickle Rick/Pickle Rick.png
+---
+
+# Pickle Rick - TryHackMe Writeup
 
 This guide walks through solving the *Pickle Rick* TryHackMe challenge, a beginner-friendly CTF focused on web enumeration and shell techniques. Since TryHackMe machines use dynamic IPs, replace `<targetIP>` with the target machine's IP and `<yourIP>` with your attacking machine's IP.
 
