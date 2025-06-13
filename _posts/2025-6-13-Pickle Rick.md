@@ -43,7 +43,7 @@ Log in using:
 
 ![Pickle-Rick](../Images/Pickle%20Rick/thm_pickle-rick_6.png)
 
-Upon login a **Command Panel** allows command execution on the server.
+Upon login, a **Command Panel** allows command execution on the server.
 
 ## Step 4: Finding the First Ingredient
 In the Command Panel, list files in `/var/www/html`. A file `Sup3rS3cretPickl3Ingred.txt` is present. Since `cat` is disabled, access it via the browser:  
